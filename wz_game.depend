@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1742662475 source:f:\lap trinh\wizard_survival\main.cpp
+	"Game.h"
+
+1742662502 f:\lap trinh\wizard_survival\game.h
+	<SDL.h>
+	<iostream>
+

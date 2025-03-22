@@ -1,9 +1,15 @@
-#include <iostream>
+#include "Game.h"
 
-using namespace std;
-
-int main()
+int main(int argc, char* args[])
 {
-    cout << "Hello world!" << endl;
+    Game WizG;
+    WizG.init();
+    while(WizG.isRunning())
+    {
+        WizG.handleEvents();
+        WizG.update();
+        WizG.render();
+    }
+    WizG.close();
     return 0;
 }
