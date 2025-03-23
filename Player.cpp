@@ -7,10 +7,10 @@ Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet
     ypos = y;
     xvel = 0;
     yvel = 0;
-    srcRect = {0, 0, 20, 20};
-    destRect = {0, 0, 20, 20};
+    srcRect = {64, 0, 64, 64};
+    destRect = {0, 0, 64, 64};
 
-    playerTexture = TextureManager::LoadTexture("assets/images/dot.bmp");
+    playerTexture = TextureManager::LoadTexture("assets/images/player.png");
 }
 void Player::Update()
 {
@@ -19,6 +19,23 @@ void Player::Update()
 
     destRect.x = xpos;
     destRect.y = ypos;
+
+    if( xvel != 0 || yvel != 0 )
+    {
+        frameTimer++;
+        if(frameTimer >= frameDelay)
+        {
+            frame = (frame+1) % frameCount;
+            frameTimer = 0;
+        }
+    }
+    else
+    {
+        frame = 0;
+    }
+
+    srcRect.x = frame*64;
+    srcRect.y = direction*64;
 }
 
 void Player::Render()
@@ -33,16 +50,20 @@ void Player::handleEvent()
         switch(Game::event.key.keysym.sym)
         {
         case SDLK_w:
-            yvel -= 4;
+            yvel -= PLAYER_VEL;
+            direction = UP;
             break;
         case SDLK_s:
-            yvel += 4;
+            yvel += PLAYER_VEL;
+            direction = DOWN;
             break;
         case SDLK_a:
-            xvel -= 4;
+            xvel -= PLAYER_VEL;
+            direction = LEFT;
             break;
         case SDLK_d:
-            xvel += 4;
+            xvel += PLAYER_VEL;
+            direction = RIGHT;
             break;
         }
     }
@@ -51,16 +72,16 @@ void Player::handleEvent()
         switch(Game::event.key.keysym.sym)
         {
         case SDLK_w:
-            yvel += 4;
+            yvel += PLAYER_VEL;
             break;
         case SDLK_s:
-            yvel -= 4;
+            yvel -= PLAYER_VEL;
             break;
         case SDLK_a:
-            xvel += 4;
+            xvel += PLAYER_VEL;
             break;
         case SDLK_d:
-            xvel -= 4;
+            xvel -= PLAYER_VEL;
             break;
 
         }

@@ -3,6 +3,13 @@
 
 #include "Game.h"
 #include "GameObject.h"
+enum Direction
+{
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT
+};
 
 class Player : public GameObject
 {
@@ -13,6 +20,8 @@ public:
     void Update() override;
     void Render() override;
     void handleEvent() override;
+
+    static const int PLAYER_VEL = 5;
 private:
     int xpos;
     int ypos;
@@ -22,6 +31,12 @@ private:
 
     SDL_Texture* playerTexture;
     SDL_Rect srcRect, destRect;
+
+    int frame = 0;
+    int frameCount = 4;
+    int frameDelay = 7;
+    int frameTimer = 0;
+    Direction direction = DOWN;
 };
 
 #endif // _PLAYER_H_
