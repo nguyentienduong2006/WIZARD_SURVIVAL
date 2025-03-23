@@ -6,12 +6,14 @@
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
+SDL_Rect Game::camera;
 Player* player;
 Map* map;
 
 Game::Game()
 {
-
+    isRunning = false;
+    camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 }
 
 Game::~Game()
@@ -59,7 +61,8 @@ void Game::handleEvents()
 void Game::update()
 {
     cnt++;
-    std::cout<<cnt<<std::endl;
+    std::cout<<"cnt: "<<cnt<<"         ";
+    std::cout << "Camera: " << camera.x << ", " << camera.y << std::endl;
     player->Update();
 }
 

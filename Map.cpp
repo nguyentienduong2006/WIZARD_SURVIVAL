@@ -64,8 +64,8 @@ void Map::DrawMap()
         {
             type = map[row][col];
 
-            dest.x = col*64;
-            dest.y = row*64;
+            dest.x = col*64 - Game::camera.x;
+            dest.y = row*64 - Game::camera.y;
 
             switch(type)
             {

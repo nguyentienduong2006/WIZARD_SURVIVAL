@@ -7,15 +7,20 @@ Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet
     ypos = y;
     xvel = 0;
     yvel = 0;
-    srcRect = {64, 0, 64, 64};
-    destRect = {0, 0, 64, 64};
+    srcRect = {0, TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
+    destRect = {0, 0, TILE_WIDTH, TILE_HEIGHT};
 
     playerTexture = TextureManager::LoadTexture("assets/images/player.png");
 }
 void Player::Update()
 {
-    xpos+=xvel;
-    ypos+=yvel;
+    int newX = xpos + xvel;
+    int newY = ypos + yvel;
+
+    if(newX >=0 && newX + TILE_WIDTH <= MAP_WIDTH)
+        xpos = newX;
+    if(newY >= 0 && newY + TILE_HEIGHT <= MAP_HEIGHT)
+        ypos = newY;
 
     destRect.x = xpos;
     destRect.y = ypos;
@@ -34,13 +39,22 @@ void Player::Update()
         frame = 0;
     }
 
-    srcRect.x = frame*64;
-    srcRect.y = direction*64;
+    srcRect.x = frame*TILE_WIDTH;
+    srcRect.y = direction*TILE_HEIGHT;
+
+    Game::camera.x = xpos + (TILE_WIDTH/2) - (SCREEN_WIDTH / 2);
+    Game::camera.y = ypos + (TILE_HEIGHT/2) - (SCREEN_HEIGHT / 2);
+
+    if(Game::camera.x < 0) Game::camera.x = 0;
+    if(Game::camera.y < 0) Game::camera.y = 0;
+    if(Game::camera.x > MAP_WIDTH - Game::camera.w) Game::camera.x = MAP_WIDTH - Game::camera.w;
+    if(Game::camera.y > MAP_HEIGHT - Game::camera.h) Game::camera.y = MAP_HEIGHT - Game::camera.h;
 }
 
 void Player::Render()
 {
-    TextureManager::Draw(playerTexture, srcRect, destRect);
+    SDL_Rect renderPos = { destRect.x - Game::camera.x, destRect.y - Game::camera.y, destRect.w, destRect.h};
+    TextureManager::Draw(playerTexture, srcRect, renderPos);
 }
 
 void Player::handleEvent()
