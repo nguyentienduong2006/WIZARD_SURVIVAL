@@ -1,26 +1,60 @@
 #include "Player.h"
+#include "Collision.h"
 #include "TextureManager.h"
 
+int arr[MAP_TILE_HEIGHT][MAP_TILE_WIDTH] =
+{
+{3,0,0,0,4,5,0,0,4,5,0,0,8,0,0,8,0,0,0,0,0,0,4,5,0,0,0,0,0,0},
+{3,3,3,0,12,13,0,0,12,13,0,0,16,0,0,16,0,0,11,0,0,0,12,13,0,0,0,0,0,3},
+{0,0,3,0,0,0,8,2,0,0,4,5,1,8,0,0,3,3,3,0,8,0,2,0,11,0,0,3,3,3},
+{0,9,0,3,0,7,16,0,1,0,12,13,0,16,11,2,3,3,3,0,16,11,0,0,0,0,3,3,0,0},
+{0,0,0,3,3,3,0,0,8,0,0,8,0,0,0,3,3,3,3,0,0,0,0,0,0,3,3,0,0,0},
+{0,4,5,0,0,3,3,0,16,0,0,16,0,0,11,3,3,3,3,3,0,0,8,0,7,3,0,0,0,0},
+{0,12,13,0,8,0,3,3,0,11,2,0,8,0,0,3,3,3,3,3,0,0,16,0,3,3,0,4,5,0},
+{0,2,2,0,16,0,0,3,3,0,1,0,16,0,7,3,3,3,3,3,0,0,0,3,3,0,0,12,13,0},
+{0,0,0,1,0,0,9,0,3,3,0,11,0,0,3,3,3,3,3,3,0,3,3,3,0,0,0,0,0,0},
+{0,0,0,0,8,2,0,8,0,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,11,2,0,0,0},
+{0,0,4,5,16,0,0,16,0,0,3,3,3,3,3,3,3,3,3,3,3,3,0,9,8,0,1,0,0,0},
+{0,0,12,13,0,0,0,1,9,0,3,3,3,3,3,3,3,3,3,3,3,3,0,0,16,0,0,0,0,0},
+{0,0,0,0,0,0,0,8,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,4,5,0},
+{0,0,0,2,0,8,0,16,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,11,0,0,12,13,0},
+{0,1,8,0,0,16,0,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,0,0,0,0,0,0},
+{0,0,16,4,5,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8,0,0,0,0},
+{0,0,0,12,13,0,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,0,16,1,2,0,0},
+{0,0,0,0,0,0,8,0,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,8,0,0,0,0,0,0},
+{0,0,4,5,0,0,16,0,9,0,3,3,3,3,3,3,3,3,3,3,0,0,0,16,0,0,4,5,0,0},
+{0,0,12,13,0,1,2,0,0,8,0,0,3,3,3,0,0,0,0,8,0,9,0,0,0,0,12,13,0,0},
+{0,0,0,0,0,0,0,0,0,16,0,0,8,1,0,0,8,0,0,16,0,0,0,0,1,0,0,0,0,0},
+{0,1,0,0,8,0,0,0,0,0,0,0,16,1,0,0,16,0,0,8,0,0,0,0,0,8,0,0,1,0},
+{0,0,0,0,16,0,0,4,5,0,0,0,0,0,0,0,0,0,1,16,0,0,0,4,5,16,0,0,0,0},
+{0,0,0,0,0,0,0,12,13,0,0,0,8,0,0,4,5,0,0,0,0,0,0,12,13,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,12,13,0,0,0,0,0,0,0,0,0,0,0,0,0}
+};
 Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet, x, y)
 {
     xpos = x;
     ypos = y;
     xvel = 0;
     yvel = 0;
-    srcRect = {0, TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT};
-    destRect = {0, 0, TILE_WIDTH, TILE_HEIGHT};
+    srcRect = {0, TILE_SIZE, TILE_SIZE, TILE_SIZE};
+    destRect = {0, 0, TILE_SIZE, TILE_SIZE};
 
     playerTexture = TextureManager::LoadTexture("assets/images/player.png");
 }
 void Player::Update()
 {
-    int newX = xpos + xvel;
-    int newY = ypos + yvel;
+    xpos += xvel;
+    ypos += yvel;
 
-    if(newX >=0 && newX + TILE_WIDTH <= MAP_WIDTH)
-        xpos = newX;
-    if(newY >= 0 && newY + TILE_HEIGHT <= MAP_HEIGHT)
-        ypos = newY;
+    if( xpos < 0 || xpos + TILE_SIZE > MAP_WIDTH || touchesWall(xpos, ypos, arr) )
+    {
+        xpos -= xvel;
+    }
+    if( ypos < 0 || ypos + TILE_SIZE > MAP_HEIGHT || touchesWall(xpos, ypos, arr) )
+    {
+        ypos -= yvel;
+    }
+
 
     destRect.x = xpos;
     destRect.y = ypos;
@@ -39,11 +73,11 @@ void Player::Update()
         frame = 0;
     }
 
-    srcRect.x = frame*TILE_WIDTH;
-    srcRect.y = direction*TILE_HEIGHT;
+    srcRect.x = frame*TILE_SIZE;
+    srcRect.y = direction*TILE_SIZE;
 
-    Game::camera.x = xpos + (TILE_WIDTH/2) - (SCREEN_WIDTH / 2);
-    Game::camera.y = ypos + (TILE_HEIGHT/2) - (SCREEN_HEIGHT / 2);
+    Game::camera.x = xpos + (TILE_SIZE/2) - (SCREEN_WIDTH / 2);
+    Game::camera.y = ypos + (TILE_SIZE/2) - (SCREEN_HEIGHT / 2);
 
     if(Game::camera.x < 0) Game::camera.x = 0;
     if(Game::camera.y < 0) Game::camera.y = 0;
@@ -100,4 +134,9 @@ void Player::handleEvent()
 
         }
     }
+}
+
+SDL_Rect Player::getdestRect()
+{
+    return destRect;
 }

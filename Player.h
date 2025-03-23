@@ -22,6 +22,7 @@ public:
     void handleEvent() override;
 
     static const int PLAYER_VEL = 5;
+    SDL_Rect getdestRect();
 private:
     int xpos;
     int ypos;

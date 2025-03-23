@@ -7,11 +7,15 @@
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 640;
 
-const int MAP_WIDTH = 1280;
-const int MAP_HEIGHT = 1280;
+const int TILE_SIZE = 64;
 
-const int TILE_WIDTH = 64;
-const int TILE_HEIGHT = 64;
+const int MAP_WIDTH = 1920;
+const int MAP_HEIGHT = 1600;
+
+const int MAP_TILE_WIDTH = 30;
+const int MAP_TILE_HEIGHT = 25;
+
+
 class Game
 {
 public:
