@@ -1,70 +1,87 @@
 #include "Game.h"
-using namespace std;
-SDL_Window* gWindow = NULL;
-SDL_Renderer* gRenderer = NULL;
+#include "TextureManager.h"
+#include "GameObject.h"
+#include "Map.h"
+#include "Player.h"
+
+SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
+Player* player;
+Map* map;
+
 Game::Game()
 {
-    running = false;
+
 }
+
 Game::~Game()
 {
-
+    clean();
 }
 
-bool Game::init()
+void Game::init(const char* title, int x, int y, int width, int height, bool fullscreen)
 {
-    bool success = true;
-    if(SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    int flags = 0;
+    if(fullscreen)
     {
-        cout<<"INIT FAILD!"<<endl;
-        success = false;
+        flags = SDL_WINDOW_FULLSCREEN;
     }
-    else
+
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
-        gWindow = SDL_CreateWindow("Wizard Survival", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_RESIZABLE);
-        if(!gWindow)
-        {
-            cout<<"CREATE WINDOW FAILED"<<endl;
-            success = false;
+        std::cout<<"SDL initialized!"<<std::endl;
+        window = SDL_CreateWindow(title, x, y, width, height, flags);
+        if(window){
+            std::cout<<"Created window!"<<std::endl;
         }
-        else
-        {
-            gRenderer = SDL_CreateRenderer(gWindow, -1, 0);
-            if(!gRenderer)
-            {
-                cout<<"CREATE RENDERER FAILED!"<<endl;
-                success = false;
-            }
-            else
-            {
-                SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-            }
+        renderer = SDL_CreateRenderer(window, -1, 0);
+        if(renderer) {
+            std::cout<<"Created renderer!"<<std::endl;
         }
+        isRunning = true;
     }
-    if(success) running = true;
-    return success;
+    player = new Player("assets/images/dot.bmp", 0, 0);
+    map = new Map();
 }
+
 void Game::handleEvents()
 {
-    SDL_Event e;
-    while(SDL_PollEvent(&e))
-    {
-        if(e.type == SDL_QUIT) running = false;
+    while(SDL_PollEvent(&Game::event)) {
+        if(event.type == SDL_QUIT){
+            isRunning = false;
+        }
+        player->handleEvent();
     }
-}
-void Game::update()
-{
+
 
 }
+
+void Game::update()
+{
+    cnt++;
+    std::cout<<cnt<<std::endl;
+    player->Update();
+}
+
 void Game::render()
 {
-    SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
-    SDL_RenderClear(gRenderer);
-    SDL_RenderPresent(gRenderer);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+    map->DrawMap();
+    player->Render();
+    SDL_RenderPresent(renderer);
 }
-void Game::close()
+
+void Game::clean()
 {
-    SDL_DestroyWindow(gWindow);
-    SDL_DestroyRenderer(gRenderer);
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+
     SDL_Quit();
+    std::cout<<"destroyed game!"<<std::endl;
+}
+
+bool Game::running()
+{
+    return isRunning;
 }
