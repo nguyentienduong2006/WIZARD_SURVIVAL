@@ -3,6 +3,8 @@
 
 #include "Game.h"
 #include "GameObject.h"
+#include "BulletManager.h"
+
 enum Direction
 {
     UP,
@@ -28,7 +30,6 @@ private:
     int ypos;
     int xvel;
     int yvel;
-    //int direction;
 
     SDL_Texture* playerTexture;
     SDL_Rect srcRect, destRect;
@@ -38,6 +39,8 @@ private:
     int frameDelay = 7;
     int frameTimer = 0;
     Direction direction = DOWN;
+
+    BulletManager bulletManager;
 };
 
 #endif // _PLAYER_H_

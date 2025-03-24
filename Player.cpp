@@ -1,7 +1,10 @@
 #include "Player.h"
 #include "Collision.h"
 #include "TextureManager.h"
+#include "vector"
+#include "Bullet.h"
 
+BulletManager bulletManager;
 int arr[MAP_TILE_HEIGHT][MAP_TILE_WIDTH] =
 {
 {3,0,0,0,4,5,0,0,4,5,0,0,8,0,0,8,0,0,0,0,0,0,4,5,0,0,0,0,0,0},
@@ -83,17 +86,43 @@ void Player::Update()
     if(Game::camera.y < 0) Game::camera.y = 0;
     if(Game::camera.x > MAP_WIDTH - Game::camera.w) Game::camera.x = MAP_WIDTH - Game::camera.w;
     if(Game::camera.y > MAP_HEIGHT - Game::camera.h) Game::camera.y = MAP_HEIGHT - Game::camera.h;
+
+    bulletManager.updateBullets();
 }
 
 void Player::Render()
 {
     SDL_Rect renderPos = { destRect.x - Game::camera.x, destRect.y - Game::camera.y, destRect.w, destRect.h};
     TextureManager::Draw(playerTexture, srcRect, renderPos);
+    bulletManager.renderBullets();
 }
 
 void Player::handleEvent()
 {
-    if(Game::event.type == SDL_KEYDOWN && Game::event.key.repeat == 0)
+    if(Game::event.type == SDL_KEYDOWN && Game::event.key.keysym.sym == SDLK_SPACE)
+    {
+        int dx = 0, dy = 0;
+        if(direction == UP)
+        {
+            dx = 0;
+            dy = -10;
+        }
+        if(direction == DOWN) {
+            dx = 0;
+            dy = 10;
+        }
+        if(direction == LEFT) {
+            dx = -10;
+            dy = 0;
+        }
+        if(direction == RIGHT) {
+            dx = 10;
+            dy = 0;
+        }
+
+        bulletManager.addBullet(xpos + TILE_SIZE/2, ypos + TILE_SIZE/2, dx, dy, "assets/images/dot.bmp");
+    }
+    else if(Game::event.type == SDL_KEYDOWN && Game::event.key.repeat == 0)
     {
         switch(Game::event.key.keysym.sym)
         {
@@ -131,9 +160,9 @@ void Player::handleEvent()
         case SDLK_d:
             xvel -= PLAYER_VEL;
             break;
-
         }
     }
+
 }
 
 SDL_Rect Player::getdestRect()

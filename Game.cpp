@@ -3,10 +3,12 @@
 #include "GameObject.h"
 #include "Map.h"
 #include "Player.h"
+#include "algorithm"
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 SDL_Rect Game::camera;
+std::vector<Bullet> bullets;
 Player* player;
 Map* map;
 
