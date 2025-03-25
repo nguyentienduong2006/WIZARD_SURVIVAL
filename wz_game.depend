@@ -2,13 +2,13 @@
 1742763282 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1742772276 f:\lap trinh\wizard_survival\game.h
+1742792180 f:\lap trinh\wizard_survival\game.h
 	<SDL.h>
 	<SDL_image.h>
 	<iostream>
 	<vector>
 
-1742781510 source:f:\lap trinh\wizard_survival\game.cpp
+1742792122 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -55,7 +55,7 @@
 	"Game.h"
 	<set>
 
-1742790114 source:f:\lap trinh\wizard_survival\bullet.cpp
+1742791127 source:f:\lap trinh\wizard_survival\bullet.cpp
 	"Bullet.h"
 	"TextureManager.h"
 
@@ -67,7 +67,7 @@
 	<vector>
 	"Bullet.h"
 
-1742787720 source:f:\lap trinh\wizard_survival\bulletmanager.cpp
+1742791127 source:f:\lap trinh\wizard_survival\bulletmanager.cpp
 	"BulletManager.h"
 	"TextureManager.h"
 

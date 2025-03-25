@@ -28,7 +28,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     int flags = 0;
     if(fullscreen)
     {
-        flags = SDL_WINDOW_FULLSCREEN;
+        flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
     }
 
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
@@ -37,6 +37,9 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         window = SDL_CreateWindow(title, x, y, width, height, flags);
         if(window){
             std::cout<<"Created window!"<<std::endl;
+            SDL_Surface* iconSurface = IMG_Load("assets/images/GameIcon.png");
+            SDL_SetWindowIcon(window, iconSurface);
+            SDL_FreeSurface(iconSurface);
         }
         renderer = SDL_CreateRenderer(window, -1, 0);
         if(renderer) {
