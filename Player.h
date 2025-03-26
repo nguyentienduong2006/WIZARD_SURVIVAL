@@ -1,17 +1,9 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "Game.h"
 #include "GameObject.h"
 #include "BulletManager.h"
-
-enum Direction
-{
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT
-};
+#include "config.h"
 
 class Player : public GameObject
 {
@@ -25,6 +17,9 @@ public:
 
     static const int PLAYER_VEL = 5;
     SDL_Rect getdestRect();
+
+    int getX() {return xpos;}
+    int getY() {return ypos;}
 private:
     int xpos;
     int ypos;
@@ -41,6 +36,7 @@ private:
     Direction direction = DOWN;
 
     BulletManager bulletManager;
+
 };
 
 #endif // _PLAYER_H_

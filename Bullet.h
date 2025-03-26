@@ -1,6 +1,8 @@
 #ifndef _BULLET_H_
 #define _BULLET_H_
-#include "Game.h"
+
+#include "config.h"
+
 class Bullet
 {
 public:

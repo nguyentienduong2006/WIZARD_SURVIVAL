@@ -1,6 +1,7 @@
 #ifndef _GAMEOBJECT_H_
 #define _GAMEOBJECT_H_
-#include "Game.h"
+
+#include "config.h"
 
 class GameObject
 {
@@ -8,12 +9,12 @@ public:
     GameObject(const char* textureSheet, int x, int y);
     virtual ~GameObject();
 
-    virtual void Update();
+    virtual void Update() = 0;
     virtual void Render();
 
     virtual void handleEvent();
 
-private:
+protected:
 
     int xpos;
     int ypos;

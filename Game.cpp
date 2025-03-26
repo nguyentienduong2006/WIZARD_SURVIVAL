@@ -4,10 +4,14 @@
 #include "Map.h"
 #include "Player.h"
 #include "algorithm"
+#include "Bullet.h"
+#include "BulletManager.h"
+#include "Enemy.h"
+#include "Orc.h"
+#include "EnemyManager.h"
 
-SDL_Renderer* Game::renderer = nullptr;
+
 SDL_Event Game::event;
-SDL_Rect Game::camera;
 std::vector<Bullet> bullets;
 Player* player;
 Map* map;
@@ -15,7 +19,7 @@ Map* map;
 Game::Game()
 {
     isRunning = false;
-    camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    Camera::camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 }
 
 Game::~Game()
@@ -41,8 +45,8 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
             SDL_SetWindowIcon(window, iconSurface);
             SDL_FreeSurface(iconSurface);
         }
-        renderer = SDL_CreateRenderer(window, -1, 0);
-        if(renderer) {
+        Renderer::renderer = SDL_CreateRenderer(window, -1, 0);
+        if(Renderer::renderer) {
             std::cout<<"Created renderer!"<<std::endl;
         }
         isRunning = true;
@@ -67,23 +71,23 @@ void Game::update()
 {
     cnt++;
     std::cout<<"cnt: "<<cnt<<"         ";
-    std::cout << "Camera: " << camera.x << ", " << camera.y << std::endl;
+    std::cout << "Camera: " << Camera::camera.x << ", " << Camera::camera.y << std::endl;
     player->Update();
 }
 
 void Game::render()
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
+    SDL_RenderClear(Renderer::renderer);
     map->DrawMap();
     player->Render();
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(Renderer::renderer);
 }
 
 void Game::clean()
 {
     SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(Renderer::renderer);
 
     SDL_Quit();
     std::cout<<"destroyed game!"<<std::endl;

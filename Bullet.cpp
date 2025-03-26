@@ -22,8 +22,8 @@ void Bullet::update()
 void Bullet::render()
 {
     SDL_Rect adjustedRect = dest;
-    adjustedRect.x -= Game::camera.x;
-    adjustedRect.y -= Game::camera.y;
+    adjustedRect.x -= Camera::camera.x;
+    adjustedRect.y -= Camera::camera.y;
     TextureManager::Draw(bulletTexture, src, adjustedRect);
 }
 

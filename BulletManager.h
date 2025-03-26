@@ -1,7 +1,6 @@
 #ifndef _BULLET_MANAGER_H_
 #define _BULLET_MANAGER_H_
 
-#include "Game.h"
 #include <vector>
 #include "Bullet.h"
 

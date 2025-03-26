@@ -61,7 +61,7 @@ void Player::Update()
 
     destRect.x = xpos;
     destRect.y = ypos;
-
+    //ANIMETION
     if( xvel != 0 || yvel != 0 )
     {
         frameTimer++;
@@ -79,20 +79,20 @@ void Player::Update()
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 
-    Game::camera.x = xpos + (TILE_SIZE/2) - (SCREEN_WIDTH / 2);
-    Game::camera.y = ypos + (TILE_SIZE/2) - (SCREEN_HEIGHT / 2);
+    Camera::camera.x = xpos + (TILE_SIZE/2) - (SCREEN_WIDTH / 2);
+    Camera::camera.y = ypos + (TILE_SIZE/2) - (SCREEN_HEIGHT / 2);
 
-    if(Game::camera.x < 0) Game::camera.x = 0;
-    if(Game::camera.y < 0) Game::camera.y = 0;
-    if(Game::camera.x > MAP_WIDTH - Game::camera.w) Game::camera.x = MAP_WIDTH - Game::camera.w;
-    if(Game::camera.y > MAP_HEIGHT - Game::camera.h) Game::camera.y = MAP_HEIGHT - Game::camera.h;
+    if(Camera::camera.x < 0) Camera::camera.x = 0;
+    if(Camera::camera.y < 0) Camera::camera.y = 0;
+    if(Camera::camera.x > MAP_WIDTH - Camera::camera.w) Camera::camera.x = MAP_WIDTH - Camera::camera.w;
+    if(Camera::camera.y > MAP_HEIGHT - Camera::camera.h) Camera::camera.y = MAP_HEIGHT - Camera::camera.h;
 
     bulletManager.updateBullets();
 }
 
 void Player::Render()
 {
-    SDL_Rect renderPos = { destRect.x - Game::camera.x, destRect.y - Game::camera.y, destRect.w, destRect.h};
+    SDL_Rect renderPos = { destRect.x - Camera::camera.x, destRect.y - Camera::camera.y, destRect.w, destRect.h};
     TextureManager::Draw(playerTexture, srcRect, renderPos);
     bulletManager.renderBullets();
 }
