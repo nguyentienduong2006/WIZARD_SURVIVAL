@@ -7,7 +7,7 @@
 	<iostream>
 	<vector>
 
-1742960536 source:f:\lap trinh\wizard_survival\game.cpp
+1742965171 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -32,9 +32,10 @@
 	"GameObject.h"
 	"TextureManager.h"
 
-1742964902 source:f:\lap trinh\wizard_survival\map.cpp
+1742965935 source:f:\lap trinh\wizard_survival\map.cpp
 	"Map.h"
 	"TextureManager.h"
+	"MapData.h"
 
 1742964218 f:\lap trinh\wizard_survival\gameobject.h
 	"config.h"
@@ -42,12 +43,13 @@
 1742964235 f:\lap trinh\wizard_survival\map.h
 	"config.h"
 
-1742965150 source:f:\lap trinh\wizard_survival\player.cpp
+1742965892 source:f:\lap trinh\wizard_survival\player.cpp
 	"Player.h"
 	"Collision.h"
 	"TextureManager.h"
 	"vector"
 	"Bullet.h"
+	"MapData.h"
 
 1742964257 f:\lap trinh\wizard_survival\player.h
 	"GameObject.h"
@@ -114,4 +116,10 @@
 
 1742964878 source:f:\lap trinh\wizard_survival\renderer.cpp
 	"renderer.h"
+
+1742965846 source:f:\lap trinh\wizard_survival\mapdata.cpp
+	"MapData.h"
+
+1742965846 f:\lap trinh\wizard_survival\mapdata.h
+	"config.h"
 

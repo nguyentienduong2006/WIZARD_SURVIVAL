@@ -48,12 +48,19 @@
 		<Unit filename="GameObject.h" />
 		<Unit filename="Map.cpp" />
 		<Unit filename="Map.h" />
+		<Unit filename="MapData.cpp" />
+		<Unit filename="MapData.h" />
 		<Unit filename="Orc.h" />
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />
 		<Unit filename="TextureManager.cpp" />
 		<Unit filename="TextureManager.h" />
+		<Unit filename="camera.cpp" />
+		<Unit filename="camera.h" />
+		<Unit filename="config.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="renderer.cpp" />
+		<Unit filename="renderer.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
