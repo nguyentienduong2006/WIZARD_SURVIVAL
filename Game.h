@@ -4,7 +4,10 @@
 #include "config.h"
 #include <iostream>
 #include <vector>
-class Bullet;
+#include "Bullet.h"
+#include "BulletManager.h"
+#include "Enemy.h"
+#include "Orc.h"
 
 class Game
 {
@@ -23,6 +26,8 @@ public:
 
     static SDL_Event event;
     static std::vector<Bullet> bullets;
+    static std::vector<Enemy*> enemies;
+    void spawnEnemy(int x, int y);
 private:
 
     bool isRunning;

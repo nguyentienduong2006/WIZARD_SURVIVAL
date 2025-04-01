@@ -4,17 +4,12 @@
 #include "Map.h"
 #include "Player.h"
 #include "algorithm"
-#include "Bullet.h"
-#include "BulletManager.h"
-#include "Enemy.h"
-#include "Orc.h"
-#include "EnemyManager.h"
-
 
 SDL_Event Game::event;
 std::vector<Bullet> bullets;
 Player* player;
 Map* map;
+std::vector<Enemy*> Game::enemies;
 
 Game::Game()
 {
@@ -53,6 +48,7 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     }
     player = new Player("assets/images/dot.bmp", 0, 0);
     map = new Map();
+    spawnEnemy(1, 1);
 }
 
 void Game::handleEvents()
@@ -73,6 +69,9 @@ void Game::update()
     std::cout<<"cnt: "<<cnt<<"         ";
     std::cout << "Camera: " << Camera::camera.x << ", " << Camera::camera.y << std::endl;
     player->Update();
+    for(auto enemy : enemies) {
+        enemy->Update(*player);
+    }
 }
 
 void Game::render()
@@ -81,6 +80,8 @@ void Game::render()
     SDL_RenderClear(Renderer::renderer);
     map->DrawMap();
     player->Render();
+    for(auto enemy : enemies)
+        enemy->Render();
     SDL_RenderPresent(Renderer::renderer);
 }
 
@@ -96,4 +97,9 @@ void Game::clean()
 bool Game::running()
 {
     return isRunning;
+}
+
+void Game::spawnEnemy(int x, int y)
+{
+    enemies.push_back(new Orc(x,y));
 }

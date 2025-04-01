@@ -18,8 +18,8 @@ protected:
 
     int xpos;
     int ypos;
-    int xvel;
-    int yvel;
+
+    int speed;
 
     SDL_Texture* objTexture;
     SDL_Rect srcRect, destRect;
