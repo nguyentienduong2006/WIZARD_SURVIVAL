@@ -8,6 +8,7 @@
 #include "BulletManager.h"
 #include <ctime>
 #include <cstdlib>
+#include "MainMenu.h"
 
 class Game
 {
@@ -27,6 +28,8 @@ public:
     static SDL_Event event;
     static std::vector<Bullet> bullets;
     void spawnEnemy(int x, int y);
+
+    void addScore(int points);
 private:
     bool isRunning;
     int cnt = 0;
@@ -36,5 +39,20 @@ private:
     Uint32 spawnInterval = 5000;
     static const Uint32 FIVE_MINUTE = 300000;
     static const Uint32 ONE_MINUTE = 600000;
+
+    //menu
+    MainMenu mainMenu;
+    bool inMenu;
+
+    //score system
+    int score = 0;
+    Uint32 lastScoreTime = 0;
+    TTF_Font* scoreFont = NULL;
+    SDL_Texture* scoreTexture = NULL;
+    SDL_Rect scoreRect;
+
+    SDL_Color white = {255, 255, 255, 255};
+
+    SDL_Texture* createTextTexture(const char* text, SDL_Color color);
 };
 #endif // _GAME_H_

@@ -4,7 +4,7 @@
 1744021882 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1744021881 f:\lap trinh\wizard_survival\game.h
+1744047675 f:\lap trinh\wizard_survival\game.h
 	"config.h"
 	<iostream>
 	<vector>
@@ -12,6 +12,7 @@
 	"BulletManager.h"
 	<ctime>
 	<cstdlib>
+	"MainMenu.h"
 
 1743484533 .h>
 
@@ -45,7 +46,7 @@
 
 1742769098 D
 
-1744024844 source:f:\lap trinh\wizard_survival\game.cpp
+1744047732 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -57,14 +58,16 @@
 	"BulletManager.h"
 	"Lion.h"
 	"Blaze.h"
+	<string>
 
-1744021881 source:f:\lap trinh\wizard_survival\texturemanager.cpp
+1744047468 source:f:\lap trinh\wizard_survival\texturemanager.cpp
 	"TextureManager.h"
 
-1744021881 f:\lap trinh\wizard_survival\texturemanager.h
+1744047487 f:\lap trinh\wizard_survival\texturemanager.h
 	"config.h"
 	"camera.h"
 	"renderer.h"
+	"Game.h"
 
 1744021881 source:f:\lap trinh\wizard_survival\gameobject.cpp
 	"GameObject.h"
@@ -139,10 +142,10 @@
 	"config.h"
 	"GameObject.h"
 
-1744021881 source:f:\lap trinh\wizard_survival\enemymanager.cpp
+1744047308 source:f:\lap trinh\wizard_survival\enemymanager.cpp
 	"EnemyManager.h"
 
-1744021881 f:\lap trinh\wizard_survival\enemymanager.h
+1744047308 f:\lap trinh\wizard_survival\enemymanager.h
 	"Enemy.h"
 	"vector"
 	"BulletManager.h"
@@ -151,9 +154,10 @@
 	"Enemy.h"
 	"Player.h"
 
-1744023057 f:\lap trinh\wizard_survival\config.h
+1744034990 f:\lap trinh\wizard_survival\config.h
 	<SDL.h>
 	<SDL_image.h>
+	<SDL_ttf.h>
 
 1744021882 f:\lap trinh\wizard_survival\camera.h
 	"config.h"
@@ -190,4 +194,29 @@
 1744024727 f:\lap trinh\wizard_survival\blaze.h
 	"Enemy.h"
 	"Player.h"
+
+1744032807 source:f:\lap trinh\wizard_survival\blaze.cpp
+	"Blaze.h"
+	"Collision.h"
+	"MapData.h"
+	"Player.h"
+	"cmath"
+	"camera.h"
+	"TextureManager.h"
+	"MapData.h"
+
+1744033558 f:\lap trinh\wizard_survival\slimeboss.h
+	"Enemy.h"
+	"Player.h"
+
+1744034100 source:f:\lap trinh\wizard_survival\slimeboss.cpp
+
+1744047588 f:\lap trinh\wizard_survival\mainmenu.h
+	"config.h"
+
+1744047588 source:f:\lap trinh\wizard_survival\mainmenu.cpp
+	"MainMenu.h"
+	"TextureManager.h"
+	"Game.h"
+	<iostream>
 

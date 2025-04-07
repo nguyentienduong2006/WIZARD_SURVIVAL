@@ -39,8 +39,9 @@ void EnemyManager::clearEnemies()
     enemies.clear();
 }
 
-void EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
+int EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
 {
+    int killed = 0;
     auto& bullets = bulletManager.getBullets();
     for(auto enemyIt = enemies.begin(); enemyIt != enemies.end(); )
     {
@@ -70,8 +71,10 @@ void EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
         {
             delete *enemyIt;
             enemyIt = enemies.erase(enemyIt);
+            killed++;
         }
         else
         ++enemyIt;
     }
+    return killed;
 }

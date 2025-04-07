@@ -14,7 +14,7 @@ public:
     void updateEnemies();
     void renderEnemies();
     void clearEnemies();
-    void checkBulletCollisions(BulletManager& bulletManager);
+    int checkBulletCollisions(BulletManager& bulletManager);
 
 private:
     std::vector<Enemy*> enemies;

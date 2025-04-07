@@ -1,7 +1,7 @@
 #include "config.h"
 #include "camera.h"
 #include "renderer.h"
-
+#include "Game.h"
 class TextureManager
 {
 public:
