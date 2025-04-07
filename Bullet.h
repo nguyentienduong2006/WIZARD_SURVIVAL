@@ -1,21 +1,21 @@
 #ifndef _BULLET_H_
 #define _BULLET_H_
-#include "Game.h"
-class Bullet
+
+#include "config.h"
+#include "GameObject.h"
+
+class Bullet : public GameObject
 {
 public:
-    Bullet(int x, int y, int dx, int dy, const char* texture);
+    Bullet(int x, int y, int dx, int dy, const char* textureSheet);
 
-    void update();
+    void Update() override;
+    void Render() override;
 
-    void render();
+    SDL_Rect getDestRect() const {return destRect; }
+    int getDamage() const {return damage; }
 
-    SDL_Rect getRect() const;
-
-    int x, y, dx, dy;
-    SDL_Texture* bulletTexture;
-    SDL_Rect src, dest;
 private:
-    const char* textureFile;
+    int damage = 10;
 };
 #endif // _BULLET_H_

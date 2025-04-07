@@ -1,17 +1,9 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "Game.h"
 #include "GameObject.h"
 #include "BulletManager.h"
-
-enum Direction
-{
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT
-};
+#include "config.h"
 
 class Player : public GameObject
 {
@@ -21,26 +13,23 @@ public:
     ~Player() {}
     void Update() override;
     void Render() override;
-    void handleEvent() override;
+    void handleEvent(SDL_Event& event, BulletManager& bulletManager);
 
     static const int PLAYER_VEL = 5;
-    SDL_Rect getdestRect();
+
+    SDL_Rect getDestRect() const {return destRect; }
+    int getX() const {return xpos;}
+    int getY() const {return ypos;}
+    int getHealth() const {return health; }
+    void takeDamage(int damage);
 private:
-    int xpos;
-    int ypos;
-    int xvel;
-    int yvel;
-
-    SDL_Texture* playerTexture;
-    SDL_Rect srcRect, destRect;
-
+    int health;
     int frame = 0;
     int frameCount = 4;
     int frameDelay = 7;
     int frameTimer = 0;
     Direction direction = DOWN;
 
-    BulletManager bulletManager;
 };
 
 #endif // _PLAYER_H_

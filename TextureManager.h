@@ -1,4 +1,6 @@
-#include "Game.h"
+#include "config.h"
+#include "camera.h"
+#include "renderer.h"
 
 class TextureManager
 {

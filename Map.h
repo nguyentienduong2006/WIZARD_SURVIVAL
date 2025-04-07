@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "config.h"
 
 class Map
 {

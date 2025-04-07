@@ -4,18 +4,21 @@
 #include "Map.h"
 #include "Player.h"
 #include "algorithm"
+#include "EnemyManager.h"
+#include "Orc.h"
+#include "BulletManager.h"
 
-SDL_Renderer* Game::renderer = nullptr;
+
 SDL_Event Game::event;
-SDL_Rect Game::camera;
-std::vector<Bullet> bullets;
 Player* player;
 Map* map;
+EnemyManager enemyManager;
+BulletManager bulletManager;
 
 Game::Game()
 {
     isRunning = false;
-    camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+    Camera::camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 }
 
 Game::~Game()
@@ -41,14 +44,16 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
             SDL_SetWindowIcon(window, iconSurface);
             SDL_FreeSurface(iconSurface);
         }
-        renderer = SDL_CreateRenderer(window, -1, 0);
-        if(renderer) {
+        Renderer::renderer = SDL_CreateRenderer(window, -1, 0);
+        if(Renderer::renderer) {
             std::cout<<"Created renderer!"<<std::endl;
         }
         isRunning = true;
     }
-    player = new Player("assets/images/dot.bmp", 0, 0);
+    player = new Player("assets/images/player.png", MAP_WIDTH/2, MAP_HEIGHT/2);
     map = new Map();
+    enemyManager.addEnemy(new Orc(10, 10));
+    enemyManager.addEnemy(new Orc(30, 30));
 }
 
 void Game::handleEvents()
@@ -57,33 +62,76 @@ void Game::handleEvents()
         if(event.type == SDL_QUIT){
             isRunning = false;
         }
-        player->handleEvent();
+        player->handleEvent(Game::event, bulletManager);
     }
-
-
 }
 
 void Game::update()
 {
     cnt++;
     std::cout<<"cnt: "<<cnt<<"         ";
-    std::cout << "Camera: " << camera.x << ", " << camera.y << std::endl;
+    std::cout << "Camera: " << Camera::camera.x << ", " << Camera::camera.y << std::endl;
+    //spawn
+    Uint32 currentTIme = SDL_GetTicks();
+    Uint32 elapsedTIme = currentTIme - gameStartTime;
+
+    if(currentTIme - lastSpawnTime >= spawnInterval)
+    {
+        int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
+        int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
+
+        int enemyType = std::rand()%1;
+
+        switch(enemyType)
+        {
+        case 0:
+            enemyManager.addEnemy(new Orc(spawnX, spawnY));
+            break;
+        }
+
+        if(spawnInterval > 500)
+        {
+            spawnInterval -= 100;
+        }
+        lastSpawnTime = currentTIme;
+
+        if(elapsedTIme >= FIVE_MINUTE && (currentTIme - lastSpawnTime) % ONE_MINUTE == 0)
+        {
+            int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
+            int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
+            //spawn BOSS
+        }
+    }
+
     player->Update();
+    enemyManager.updateEnemies();
+    bulletManager.updateBullets();
+    enemyManager.checkBulletCollisions(bulletManager);
+    if(player->getHealth() <= 0)
+    {
+        isRunning = false;
+    }
 }
 
 void Game::render()
 {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
+    SDL_RenderClear(Renderer::renderer);
     map->DrawMap();
     player->Render();
-    SDL_RenderPresent(renderer);
+    enemyManager.renderEnemies();
+    bulletManager.renderBullets();
+    SDL_RenderPresent(Renderer::renderer);
 }
 
 void Game::clean()
 {
+    delete player;
+    enemyManager.clearEnemies();
+    delete map;
+    bulletManager.clearBullets();
     SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(Renderer::renderer);
 
     SDL_Quit();
     std::cout<<"destroyed game!"<<std::endl;
@@ -93,3 +141,4 @@ bool Game::running()
 {
     return isRunning;
 }
+
