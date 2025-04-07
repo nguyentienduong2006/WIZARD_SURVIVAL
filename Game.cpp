@@ -8,6 +8,7 @@
 #include "Orc.h"
 #include "BulletManager.h"
 #include "Lion.h"
+#include "Blaze.h"
 
 
 SDL_Event Game::event;
@@ -79,7 +80,7 @@ void Game::update()
         int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
         int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
 
-        int enemyType = std::rand()%2;
+        int enemyType = std::rand()%3;
 
         switch(enemyType)
         {
@@ -88,6 +89,9 @@ void Game::update()
             break;
         case 1:
             enemyManager.addEnemy(new Lion(spawnX, spawnY));
+            break;
+        case 2:
+            enemyManager.addEnemy(new Blaze(spawnX, spawnY));
             break;
         }
 

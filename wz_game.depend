@@ -45,7 +45,7 @@
 
 1742769098 D
 
-1744022559 source:f:\lap trinh\wizard_survival\game.cpp
+1744024844 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -56,6 +56,7 @@
 	"Orc.h"
 	"BulletManager.h"
 	"Lion.h"
+	"Blaze.h"
 
 1744021881 source:f:\lap trinh\wizard_survival\texturemanager.cpp
 	"TextureManager.h"
@@ -185,4 +186,8 @@
 	"camera.h"
 	"TextureManager.h"
 	"MapData.h"
+
+1744024727 f:\lap trinh\wizard_survival\blaze.h
+	"Enemy.h"
+	"Player.h"
 
