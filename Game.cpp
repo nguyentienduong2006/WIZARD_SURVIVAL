@@ -4,12 +4,16 @@
 #include "Map.h"
 #include "Player.h"
 #include "algorithm"
+#include "EnemyManager.h"
+#include "Orc.h"
+#include "BulletManager.h"
+
 
 SDL_Event Game::event;
-std::vector<Bullet> bullets;
 Player* player;
 Map* map;
-std::vector<Enemy*> Game::enemies;
+EnemyManager enemyManager;
+BulletManager bulletManager;
 
 Game::Game()
 {
@@ -46,9 +50,10 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         }
         isRunning = true;
     }
-    player = new Player("assets/images/dot.bmp", 0, 0);
+    player = new Player("assets/images/player.png", MAP_WIDTH/2, MAP_HEIGHT/2);
     map = new Map();
-    spawnEnemy(1, 1);
+    enemyManager.addEnemy(new Orc(10, 10));
+    enemyManager.addEnemy(new Orc(30, 30));
 }
 
 void Game::handleEvents()
@@ -57,10 +62,8 @@ void Game::handleEvents()
         if(event.type == SDL_QUIT){
             isRunning = false;
         }
-        player->handleEvent();
+        player->handleEvent(Game::event, bulletManager);
     }
-
-
 }
 
 void Game::update()
@@ -68,9 +71,45 @@ void Game::update()
     cnt++;
     std::cout<<"cnt: "<<cnt<<"         ";
     std::cout << "Camera: " << Camera::camera.x << ", " << Camera::camera.y << std::endl;
+    //spawn
+    Uint32 currentTIme = SDL_GetTicks();
+    Uint32 elapsedTIme = currentTIme - gameStartTime;
+
+    if(currentTIme - lastSpawnTime >= spawnInterval)
+    {
+        int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
+        int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
+
+        int enemyType = std::rand()%1;
+
+        switch(enemyType)
+        {
+        case 0:
+            enemyManager.addEnemy(new Orc(spawnX, spawnY));
+            break;
+        }
+
+        if(spawnInterval > 500)
+        {
+            spawnInterval -= 100;
+        }
+        lastSpawnTime = currentTIme;
+
+        if(elapsedTIme >= FIVE_MINUTE && (currentTIme - lastSpawnTime) % ONE_MINUTE == 0)
+        {
+            int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
+            int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
+            //spawn BOSS
+        }
+    }
+
     player->Update();
-    for(auto enemy : enemies) {
-        enemy->Update(*player);
+    enemyManager.updateEnemies();
+    bulletManager.updateBullets();
+    enemyManager.checkBulletCollisions(bulletManager);
+    if(player->getHealth() <= 0)
+    {
+        isRunning = false;
     }
 }
 
@@ -80,13 +119,17 @@ void Game::render()
     SDL_RenderClear(Renderer::renderer);
     map->DrawMap();
     player->Render();
-    for(auto enemy : enemies)
-        enemy->Render();
+    enemyManager.renderEnemies();
+    bulletManager.renderBullets();
     SDL_RenderPresent(Renderer::renderer);
 }
 
 void Game::clean()
 {
+    delete player;
+    enemyManager.clearEnemies();
+    delete map;
+    bulletManager.clearBullets();
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(Renderer::renderer);
 
@@ -99,7 +142,3 @@ bool Game::running()
     return isRunning;
 }
 
-void Game::spawnEnemy(int x, int y)
-{
-    enemies.push_back(new Orc(x,y));
-}

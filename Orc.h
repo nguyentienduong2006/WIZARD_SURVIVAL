@@ -2,31 +2,26 @@
 #define _ORC_H_
 
 #include "Enemy.h"
-#include "TextureManager.h"
+#include "Player.h"
 
 class Orc : public Enemy
 {
-    public:
-    Orc(int x, int y) : Enemy("assets/images/orc_test.png", x, y, 2, 100) {}
+public:
+    Orc(int x, int y);
 
-    void Update() override {}
+    void Update() override;
+    void Render() override;
+    void Attack(Player* player) override;
 
-    void Update(Player& player) override
-    {
-        if(player.getX() > xpos) xpos += speed;
-        else if(player.getX() < xpos) xpos -= speed;
-
-        if(player.getY() > ypos) ypos += speed;
-        else if(player.getY() < ypos) ypos -= speed;
-
-        if(xpos < 0 || xpos + 64 > MAP_WIDTH) xpos -= speed;
-        if(ypos < 0 || ypos + 64 > MAP_HEIGHT) ypos -= speed;
-    }
-
-    void Render() override {
-        SDL_Rect destRect = {xpos, ypos, 64, 64};
-        TextureManager::Draw(textureSheet, NULL, destRect);
-    }
+private:
+    static const int DETECTION_RANGE = TILE_SIZE*6;
+    static const int ATTACK_RANGE = TILE_SIZE;
+    //animation
+    int frame = 0;
+    int frameCount = 3;
+    int frameDelay = 7;
+    int frameTimer = 0;
+    EnemyDirection direction = E_DOWN;
 };
 
 #endif // _ORC_H_

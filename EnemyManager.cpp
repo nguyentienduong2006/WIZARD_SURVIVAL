@@ -1,51 +1,77 @@
 #include "EnemyManager.h"
-#include <algorithm>
-
-EnemyManager::EnemyManager()
-{
-    clearAll();
-}
 
 void EnemyManager::addEnemy(Enemy* enemy)
 {
     enemies.push_back(enemy);
 }
 
-void EnemyManager::updateAll(Player& player)
+void EnemyManager::updateEnemies()
 {
-    for(auto& enemy : enemies)
+    for( auto it = enemies.begin(); it != enemies.end(); )
     {
-        enemy->Update(player);
-    }
-    removeDeadEnemies();
-}
-
-void EnemyManager::renderAll()
-{
-    for(auto& enemy : enemies)
-    {
-        enemy->Render();
-    }
-}
-
-void EnemyManager::removeDeadEnemies()
-{
-    enemies.erase(std::remove_if(enemies.begin(), enemies.end(),
-        [](Enemy* enemy) {
-        if(enemy->isDead())
+        (*it)->Update();
+        if((*it)->getHealth() <= 0)
         {
-            delete enemy;
-            return true;
+            delete *it;
+            it = enemies.erase(it);
         }
-        return false;
-    }),
-    enemies.end() );
+        else
+        {
+            ++it;
+        }
+    }
 }
 
-void EnemyManager::clearAll() {
-    for(auto enemy : enemies)
+void EnemyManager::renderEnemies()
+{
+    for( auto enemy : enemies )
+    {
+        enemy -> Render();
+    }
+}
+
+void EnemyManager::clearEnemies()
+{
+    for( auto enemy : enemies )
     {
         delete enemy;
     }
     enemies.clear();
+}
+
+void EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
+{
+    auto& bullets = bulletManager.getBullets();
+    for(auto enemyIt = enemies.begin(); enemyIt != enemies.end(); )
+    {
+        bool enemyHit = false;
+        for( auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
+        {
+            if(*bulletIt == nullptr)
+            {
+                bulletIt = bullets.erase(bulletIt);
+                continue;
+            }
+            SDL_Rect enemyRect = (*enemyIt)->getDestRect();
+            SDL_Rect bulletRect = (*bulletIt)->getDestRect();
+            if(SDL_HasIntersection(&enemyRect, &bulletRect))
+            {
+                (*enemyIt) -> takeDamage((*bulletIt)->getDamage());
+                delete *bulletIt;
+                bulletIt = bullets.erase(bulletIt);
+                enemyHit = true;
+            }
+            else
+            {
+                ++bulletIt;
+            }
+        }
+        if(enemyHit && (*enemyIt)->getHealth() <= 0)
+        {
+            delete *enemyIt;
+            enemyIt = enemies.erase(enemyIt);
+        }
+        else
+        ++enemyIt;
+    }
 }

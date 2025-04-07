@@ -4,19 +4,12 @@
 #include "vector"
 #include "Bullet.h"
 #include "MapData.h"
+#include "Game.h"
 
-BulletManager bulletManager;
 
 Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet, x, y)
 {
-    xpos = x;
-    ypos = y;
-    xvel = 0;
-    yvel = 0;
-    srcRect = {0, TILE_SIZE, TILE_SIZE, TILE_SIZE};
-    destRect = {0, 0, TILE_SIZE, TILE_SIZE};
-
-    playerTexture = TextureManager::LoadTexture("assets/images/player.png");
+    health = 100;
 }
 void Player::Update()
 {
@@ -35,7 +28,7 @@ void Player::Update()
 
     destRect.x = xpos;
     destRect.y = ypos;
-    //ANIMETION
+    //ANIMATION
     if( xvel != 0 || yvel != 0 )
     {
         frameTimer++;
@@ -53,6 +46,7 @@ void Player::Update()
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 
+    //Camera update
     Camera::camera.x = xpos + (TILE_SIZE/2) - (SCREEN_WIDTH / 2);
     Camera::camera.y = ypos + (TILE_SIZE/2) - (SCREEN_HEIGHT / 2);
 
@@ -60,18 +54,15 @@ void Player::Update()
     if(Camera::camera.y < 0) Camera::camera.y = 0;
     if(Camera::camera.x > MAP_WIDTH - Camera::camera.w) Camera::camera.x = MAP_WIDTH - Camera::camera.w;
     if(Camera::camera.y > MAP_HEIGHT - Camera::camera.h) Camera::camera.y = MAP_HEIGHT - Camera::camera.h;
-
-    bulletManager.updateBullets();
 }
 
 void Player::Render()
 {
     SDL_Rect renderPos = { destRect.x - Camera::camera.x, destRect.y - Camera::camera.y, destRect.w, destRect.h};
-    TextureManager::Draw(playerTexture, srcRect, renderPos);
-    bulletManager.renderBullets();
+    TextureManager::Draw(objTexture, srcRect, renderPos);
 }
 
-void Player::handleEvent()
+void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager)
 {
     if(Game::event.type == SDL_KEYDOWN && Game::event.key.keysym.sym == SDLK_SPACE)
     {
@@ -139,7 +130,7 @@ void Player::handleEvent()
 
 }
 
-SDL_Rect Player::getdestRect()
+void Player::takeDamage(int damage)
 {
-    return destRect;
+    health -= damage;
 }

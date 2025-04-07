@@ -50,6 +50,7 @@
 		<Unit filename="Map.h" />
 		<Unit filename="MapData.cpp" />
 		<Unit filename="MapData.h" />
+		<Unit filename="Orc.cpp" />
 		<Unit filename="Orc.h" />
 		<Unit filename="Player.cpp" />
 		<Unit filename="Player.h" />

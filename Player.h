@@ -13,29 +13,22 @@ public:
     ~Player() {}
     void Update() override;
     void Render() override;
-    void handleEvent() override;
+    void handleEvent(SDL_Event& event, BulletManager& bulletManager);
 
     static const int PLAYER_VEL = 5;
-    SDL_Rect getdestRect();
 
-    int getX() {return xpos;}
-    int getY() {return ypos;}
+    SDL_Rect getDestRect() const {return destRect; }
+    int getX() const {return xpos;}
+    int getY() const {return ypos;}
+    int getHealth() const {return health; }
+    void takeDamage(int damage);
 private:
-    int xpos;
-    int ypos;
-    int xvel;
-    int yvel;
-
-    SDL_Texture* playerTexture;
-    SDL_Rect srcRect, destRect;
-
+    int health;
     int frame = 0;
     int frameCount = 4;
     int frameDelay = 7;
     int frameTimer = 0;
     Direction direction = DOWN;
-
-    BulletManager bulletManager;
 
 };
 

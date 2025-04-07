@@ -1,23 +1,23 @@
 #ifndef _ENEMYMANAGER_H_
 #define _ENEMYMANAGER_H_
 
-#include "vector"
 #include "Enemy.h"
-#include "Orc.h"
+#include "vector"
+#include "BulletManager.h"
 
 class EnemyManager
 {
+public:
+    EnemyManager() {}
+    ~EnemyManager() { clearEnemies(); }
+    void addEnemy(Enemy* enemy);
+    void updateEnemies();
+    void renderEnemies();
+    void clearEnemies();
+    void checkBulletCollisions(BulletManager& bulletManager);
+
 private:
     std::vector<Enemy*> enemies;
-public:
-    EnemyManager();
-    ~EnemyManager();
-
-    void addEnemy(Enemy* enemy);
-    void updateAll(Player& player);
-    void renderAll();
-    void removeDeadEnemies();
-    void clearAll();
 };
 
 #endif // _ENEMYMANAGER_H_
