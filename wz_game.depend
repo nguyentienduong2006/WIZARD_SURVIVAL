@@ -1,18 +1,11 @@
 # depslib dependency file v1.0
-<<<<<<< HEAD
-1743484533 source:f:\lap trinh\wizard_survival\main.cpp
+140728031565466 <<<<<<< HEAD
+
+1744021882 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1743484533 f:\lap trinh\wizard_survival\game.h
-	<SDL.h>
-	<SDL_image.h>
-=======
-1744009015 source:f:\lap trinh\wizard_survival\main.cpp
-	"Game.h"
-
-1744009218 f:\lap trinh\wizard_survival\game.h
+1744021881 f:\lap trinh\wizard_survival\game.h
 	"config.h"
->>>>>>> fix-game-logic
 	<iostream>
 	<vector>
 	"Bullet.h"
@@ -20,11 +13,15 @@
 	<ctime>
 	<cstdlib>
 
-<<<<<<< HEAD
-1743484533 source:f:\lap trinh\wizard_survival\game.cpp
-=======
-1744021432 source:f:\lap trinh\wizard_survival\game.cpp
->>>>>>> fix-game-logic
+1743484533 .h>
+
+1743888814 -game-logic
+	<iostream>
+	<vector>
+	"Bullet.h"
+	"BulletManager.h"
+	<ctime>
+	<cstdlib>
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -34,69 +31,65 @@
 	"EnemyManager.h"
 	"Orc.h"
 	"BulletManager.h"
-
-<<<<<<< HEAD
-1743484533 source:f:\lap trinh\wizard_survival\texturemanager.cpp
-	"TextureManager.h"
-
-1743484533 f:\lap trinh\wizard_survival\texturemanager.h
-	"Game.h"
-
-1743484533 source:f:\lap trinh\wizard_survival\gameobject.cpp
-	"GameObject.h"
-	"TextureManager.h"
-
-1743484533 source:f:\lap trinh\wizard_survival\map.cpp
-=======
-1743484706 source:f:\lap trinh\wizard_survival\texturemanager.cpp
-	"TextureManager.h"
-
-1743484706 f:\lap trinh\wizard_survival\texturemanager.h
-	"config.h"
-	"camera.h"
-	"renderer.h"
-
-1743889441 source:f:\lap trinh\wizard_survival\gameobject.cpp
-	"GameObject.h"
-	"TextureManager.h"
-
-1743484706 source:f:\lap trinh\wizard_survival\map.cpp
->>>>>>> fix-game-logic
 	"Map.h"
 	"TextureManager.h"
 	"MapData.h"
-
-<<<<<<< HEAD
-1743484533 f:\lap trinh\wizard_survival\gameobject.h
-	"Game.h"
-
-1743484533 f:\lap trinh\wizard_survival\map.h
-	"Game.h"
-
-1743484533 source:f:\lap trinh\wizard_survival\player.cpp
-=======
-1743887701 f:\lap trinh\wizard_survival\gameobject.h
-	"config.h"
-
-1743484706 f:\lap trinh\wizard_survival\map.h
-	"config.h"
-
-1743889441 source:f:\lap trinh\wizard_survival\player.cpp
->>>>>>> fix-game-logic
 	"Player.h"
 	"Collision.h"
 	"TextureManager.h"
 	"vector"
 	"Bullet.h"
-<<<<<<< HEAD
+	"Game.h"
+	<vector>
+	"Bullet.h"
 
-1743484533 f:\lap trinh\wizard_survival\player.h
-=======
+1742769098 D
+
+1744022559 source:f:\lap trinh\wizard_survival\game.cpp
+	"Game.h"
+	"TextureManager.h"
+	"GameObject.h"
+	"Map.h"
+	"Player.h"
+	"algorithm"
+	"EnemyManager.h"
+	"Orc.h"
+	"BulletManager.h"
+	"Lion.h"
+
+1744021881 source:f:\lap trinh\wizard_survival\texturemanager.cpp
+	"TextureManager.h"
+
+1744021881 f:\lap trinh\wizard_survival\texturemanager.h
+	"config.h"
+	"camera.h"
+	"renderer.h"
+
+1744021881 source:f:\lap trinh\wizard_survival\gameobject.cpp
+	"GameObject.h"
+	"TextureManager.h"
+
+1744021881 source:f:\lap trinh\wizard_survival\map.cpp
+	"Map.h"
+	"TextureManager.h"
 	"MapData.h"
->>>>>>> fix-game-logic
+
+1744021881 f:\lap trinh\wizard_survival\gameobject.h
+	"config.h"
+
+1744021881 f:\lap trinh\wizard_survival\map.h
+	"config.h"
+
+1744023057 source:f:\lap trinh\wizard_survival\player.cpp
+	"Player.h"
+	"Collision.h"
+	"TextureManager.h"
+	"vector"
+	"Bullet.h"
+	"MapData.h"
 	"Game.h"
 
-1744021569 f:\lap trinh\wizard_survival\player.h
+1744023057 f:\lap trinh\wizard_survival\player.h
 	"GameObject.h"
 	"BulletManager.h"
 	"config.h"
@@ -108,37 +101,25 @@
 	"Game.h"
 	<set>
 
-<<<<<<< HEAD
-1743484533 source:f:\lap trinh\wizard_survival\bullet.cpp
-	"Bullet.h"
-	"TextureManager.h"
-
-1743484533 f:\lap trinh\wizard_survival\bullet.h
-	"Game.h"
-
-1743484533 f:\lap trinh\wizard_survival\bulletmanager.h
-	"Game.h"
-=======
-1743876635 source:f:\lap trinh\wizard_survival\bullet.cpp
+1744021881 source:f:\lap trinh\wizard_survival\bullet.cpp
 	"Bullet.h"
 	"TextureManager.h"
 	"Game.h"
 
-1743874285 f:\lap trinh\wizard_survival\bullet.h
+1744021881 f:\lap trinh\wizard_survival\bullet.h
 	"config.h"
 	"GameObject.h"
 
-1743888814 f:\lap trinh\wizard_survival\bulletmanager.h
->>>>>>> fix-game-logic
+1744021881 f:\lap trinh\wizard_survival\bulletmanager.h
 	<vector>
 	"Bullet.h"
 
-1743888209 source:f:\lap trinh\wizard_survival\bulletmanager.cpp
+1744021881 source:f:\lap trinh\wizard_survival\bulletmanager.cpp
 	"BulletManager.h"
 	"TextureManager.h"
 	"config.h"
 
-1744019545 source:f:\lap trinh\wizard_survival\orc.cpp
+1744021881 source:f:\lap trinh\wizard_survival\orc.cpp
 	"Orc.h"
 	"Collision.h"
 	"MapData.h"
@@ -148,46 +129,60 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1743952179 source:f:\lap trinh\wizard_survival\enemy.cpp
+1744021881 source:f:\lap trinh\wizard_survival\enemy.cpp
 	"Enemy.h"
 	"camera.h"
 	"TextureManager.h"
 
-1744019545 f:\lap trinh\wizard_survival\enemy.h
+1744023057 f:\lap trinh\wizard_survival\enemy.h
 	"config.h"
 	"GameObject.h"
 
-1743888814 source:f:\lap trinh\wizard_survival\enemymanager.cpp
+1744021881 source:f:\lap trinh\wizard_survival\enemymanager.cpp
 	"EnemyManager.h"
 
-1743876292 f:\lap trinh\wizard_survival\enemymanager.h
+1744021881 f:\lap trinh\wizard_survival\enemymanager.h
 	"Enemy.h"
 	"vector"
 	"BulletManager.h"
 
-1744019545 f:\lap trinh\wizard_survival\orc.h
+1744022374 f:\lap trinh\wizard_survival\orc.h
 	"Enemy.h"
 	"Player.h"
 
-1743484706 f:\lap trinh\wizard_survival\config.h
+1744023057 f:\lap trinh\wizard_survival\config.h
 	<SDL.h>
 	<SDL_image.h>
 
-1743484706 f:\lap trinh\wizard_survival\camera.h
+1744021882 f:\lap trinh\wizard_survival\camera.h
 	"config.h"
 
-1743484706 f:\lap trinh\wizard_survival\renderer.h
+1744021882 f:\lap trinh\wizard_survival\renderer.h
 	"config.h"
 
-1743484706 source:f:\lap trinh\wizard_survival\camera.cpp
+1744021882 source:f:\lap trinh\wizard_survival\camera.cpp
 	"camera.h"
 
-1743484706 source:f:\lap trinh\wizard_survival\renderer.cpp
+1744021882 source:f:\lap trinh\wizard_survival\renderer.cpp
 	"renderer.h"
 
-1743484706 source:f:\lap trinh\wizard_survival\mapdata.cpp
+1744021881 source:f:\lap trinh\wizard_survival\mapdata.cpp
 	"MapData.h"
 
-1743484706 f:\lap trinh\wizard_survival\mapdata.h
+1744021881 f:\lap trinh\wizard_survival\mapdata.h
 	"config.h"
+
+1744022689 f:\lap trinh\wizard_survival\lion.h
+	"Enemy.h"
+	"Player.h"
+
+1744022528 source:f:\lap trinh\wizard_survival\lion.cpp
+	"Lion.h"
+	"Collision.h"
+	"MapData.h"
+	"Player.h"
+	"cmath"
+	"camera.h"
+	"TextureManager.h"
+	"MapData.h"
 

@@ -67,20 +67,20 @@ void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager)
     if(Game::event.type == SDL_KEYDOWN && Game::event.key.keysym.sym == SDLK_SPACE)
     {
         int dx = 0, dy = 0;
-        if(direction == UP)
+        if(direction == E_UP)
         {
             dx = 0;
             dy = -10;
         }
-        if(direction == DOWN) {
+        if(direction == E_DOWN) {
             dx = 0;
             dy = 10;
         }
-        if(direction == LEFT) {
+        if(direction == E_LEFT) {
             dx = -10;
             dy = 0;
         }
-        if(direction == RIGHT) {
+        if(direction == E_RIGHT) {
             dx = 10;
             dy = 0;
         }
@@ -93,19 +93,19 @@ void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager)
         {
         case SDLK_w:
             yvel -= PLAYER_VEL;
-            direction = UP;
+            direction = E_UP;
             break;
         case SDLK_s:
             yvel += PLAYER_VEL;
-            direction = DOWN;
+            direction = E_DOWN;
             break;
         case SDLK_a:
             xvel -= PLAYER_VEL;
-            direction = LEFT;
+            direction = E_LEFT;
             break;
         case SDLK_d:
             xvel += PLAYER_VEL;
-            direction = RIGHT;
+            direction = E_RIGHT;
             break;
         }
     }

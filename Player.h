@@ -25,10 +25,10 @@ public:
 private:
     int health;
     int frame = 0;
-    int frameCount = 4;
+    int frameCount = 3;
     int frameDelay = 7;
     int frameTimer = 0;
-    Direction direction = DOWN;
+    EnemyDirection direction = E_DOWN;
 
 };
 

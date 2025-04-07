@@ -46,6 +46,8 @@
 		<Unit filename="Game.h" />
 		<Unit filename="GameObject.cpp" />
 		<Unit filename="GameObject.h" />
+		<Unit filename="Lion.cpp" />
+		<Unit filename="Lion.h" />
 		<Unit filename="Map.cpp" />
 		<Unit filename="Map.h" />
 		<Unit filename="MapData.cpp" />

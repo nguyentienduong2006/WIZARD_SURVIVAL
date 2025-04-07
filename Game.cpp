@@ -7,6 +7,7 @@
 #include "EnemyManager.h"
 #include "Orc.h"
 #include "BulletManager.h"
+#include "Lion.h"
 
 
 SDL_Event Game::event;
@@ -50,10 +51,8 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         }
         isRunning = true;
     }
-    player = new Player("assets/images/player.png", MAP_WIDTH/2, MAP_HEIGHT/2);
+    player = new Player("assets/images/witch.png", MAP_WIDTH/2, MAP_HEIGHT/2);
     map = new Map();
-    enemyManager.addEnemy(new Orc(10, 10));
-    enemyManager.addEnemy(new Orc(30, 30));
 }
 
 void Game::handleEvents()
@@ -80,12 +79,15 @@ void Game::update()
         int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
         int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
 
-        int enemyType = std::rand()%1;
+        int enemyType = std::rand()%2;
 
         switch(enemyType)
         {
         case 0:
             enemyManager.addEnemy(new Orc(spawnX, spawnY));
+            break;
+        case 1:
+            enemyManager.addEnemy(new Lion(spawnX, spawnY));
             break;
         }
 

@@ -3,13 +3,7 @@
 
 #include "config.h"
 #include "GameObject.h"
-enum EnemyDirection
-{
-    E_UP,
-    E_RIGHT,
-    E_DOWN,
-    E_LEFT
-};
+
 class Player;
 
 class Enemy : public GameObject
