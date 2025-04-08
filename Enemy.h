@@ -17,7 +17,7 @@ public:
     virtual void Attack(Player* player) = 0;
 
     int getHealth() const {return health; }
-    void takeDamage(int damage) {health -= damage; }
+    void takeDamage(int damage);
     bool isDead() const {return health <= 0; }
 
 protected:

@@ -4,7 +4,7 @@
 1744021882 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1744047675 f:\lap trinh\wizard_survival\game.h
+1744072672 f:\lap trinh\wizard_survival\game.h
 	"config.h"
 	<iostream>
 	<vector>
@@ -46,7 +46,7 @@
 
 1742769098 D
 
-1744047732 source:f:\lap trinh\wizard_survival\game.cpp
+1744063002 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -69,7 +69,7 @@
 	"renderer.h"
 	"Game.h"
 
-1744021881 source:f:\lap trinh\wizard_survival\gameobject.cpp
+1744066305 source:f:\lap trinh\wizard_survival\gameobject.cpp
 	"GameObject.h"
 	"TextureManager.h"
 
@@ -78,13 +78,13 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744021881 f:\lap trinh\wizard_survival\gameobject.h
+1744066305 f:\lap trinh\wizard_survival\gameobject.h
 	"config.h"
 
 1744021881 f:\lap trinh\wizard_survival\map.h
 	"config.h"
 
-1744023057 source:f:\lap trinh\wizard_survival\player.cpp
+1744071182 source:f:\lap trinh\wizard_survival\player.cpp
 	"Player.h"
 	"Collision.h"
 	"TextureManager.h"
@@ -93,7 +93,7 @@
 	"MapData.h"
 	"Game.h"
 
-1744023057 f:\lap trinh\wizard_survival\player.h
+1744071130 f:\lap trinh\wizard_survival\player.h
 	"GameObject.h"
 	"BulletManager.h"
 	"config.h"
@@ -105,7 +105,7 @@
 	"Game.h"
 	<set>
 
-1744021881 source:f:\lap trinh\wizard_survival\bullet.cpp
+1744051828 source:f:\lap trinh\wizard_survival\bullet.cpp
 	"Bullet.h"
 	"TextureManager.h"
 	"Game.h"
@@ -133,12 +133,12 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744021881 source:f:\lap trinh\wizard_survival\enemy.cpp
+1744071445 source:f:\lap trinh\wizard_survival\enemy.cpp
 	"Enemy.h"
 	"camera.h"
 	"TextureManager.h"
 
-1744023057 f:\lap trinh\wizard_survival\enemy.h
+1744071445 f:\lap trinh\wizard_survival\enemy.h
 	"config.h"
 	"GameObject.h"
 
@@ -150,14 +150,15 @@
 	"vector"
 	"BulletManager.h"
 
-1744022374 f:\lap trinh\wizard_survival\orc.h
+1744071770 f:\lap trinh\wizard_survival\orc.h
 	"Enemy.h"
 	"Player.h"
 
-1744034990 f:\lap trinh\wizard_survival\config.h
+1744049877 f:\lap trinh\wizard_survival\config.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
+	<SDL_mixer.h>
 
 1744021882 f:\lap trinh\wizard_survival\camera.h
 	"config.h"
@@ -211,10 +212,10 @@
 
 1744034100 source:f:\lap trinh\wizard_survival\slimeboss.cpp
 
-1744047588 f:\lap trinh\wizard_survival\mainmenu.h
+1744064571 f:\lap trinh\wizard_survival\mainmenu.h
 	"config.h"
 
-1744047588 source:f:\lap trinh\wizard_survival\mainmenu.cpp
+1744064828 source:f:\lap trinh\wizard_survival\mainmenu.cpp
 	"MainMenu.h"
 	"TextureManager.h"
 	"Game.h"

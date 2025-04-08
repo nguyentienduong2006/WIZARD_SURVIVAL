@@ -7,7 +7,7 @@ Bullet::Bullet(int x, int y, int dx, int dy, const char* textureSheet) : GameObj
     xvel = dx;
     yvel = dy;
     srcRect = {0, 0, 20, 20};
-    destRect = {xpos, ypos, 10, 10};
+    destRect = {xpos, ypos, 40, 40};
 }
 
 void Bullet::Update()

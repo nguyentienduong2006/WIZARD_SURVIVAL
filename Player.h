@@ -13,7 +13,7 @@ public:
     ~Player() {}
     void Update() override;
     void Render() override;
-    void handleEvent(SDL_Event& event, BulletManager& bulletManager);
+    void handleEvent(SDL_Event& event, BulletManager& bulletManager, Mix_Chunk* shootSound);
 
     static const int PLAYER_VEL = 5;
 
@@ -30,6 +30,8 @@ private:
     int frameTimer = 0;
     EnemyDirection direction = E_DOWN;
 
+    bool isHit;
+    Uint32 hitTime = 0;
 };
 
 #endif // _PLAYER_H_

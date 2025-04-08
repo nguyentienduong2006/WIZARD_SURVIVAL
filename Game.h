@@ -32,6 +32,7 @@ public:
     void addScore(int points);
 private:
     bool isRunning;
+    bool isFullScreen = false;
     int cnt = 0;
     SDL_Window* window;
     Uint32 gameStartTime = 0;
@@ -54,5 +55,18 @@ private:
     SDL_Color white = {255, 255, 255, 255};
 
     SDL_Texture* createTextTexture(const char* text, SDL_Color color);
+
+    //sound
+    Mix_Music* backgroundMusic = nullptr;
+    Mix_Chunk* shootSound = nullptr;
+    Mix_Chunk* enemyDieSound = nullptr;
+    Mix_Chunk* buttonClickSound = nullptr;
+    bool bgMusicStarted = false;
+    Uint32 bgMusicDelay = 3000;
+
+    //pause
+    bool isPaused = false;
+    SDL_Texture* pauseTexture;
+    SDL_Rect pauseRect;
 };
 #endif // _GAME_H_

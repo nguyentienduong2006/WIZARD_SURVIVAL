@@ -12,3 +12,8 @@ void Enemy::Render()
     SDL_Rect renderPos = {destRect.x - Camera::camera.x, destRect.y - Camera::camera.y, destRect.w, destRect.h };
     TextureManager::Draw(objTexture, srcRect, renderPos);
 }
+
+void Enemy::takeDamage(int damage)
+{
+    health -= damage;
+}

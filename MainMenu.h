@@ -10,7 +10,7 @@ public:
     ~MainMenu();
 
     void init();
-    void handleEvent(bool &isRunning, bool& startGame);
+    void handleEvent(bool &isRunning, bool& startGame, Mix_Chunk* buttonClickSound);
     void render();
 
 private:
@@ -28,6 +28,16 @@ private:
     bool exitHovered = false;
 
     SDL_Texture* createTextTexture(const char* text, SDL_Color color);
+
+    SDL_Texture* soundOnTexture;
+    SDL_Texture* soundOffTexture;
+    SDL_Rect soundRect;
+    bool isSoundOn = true;
+
+    SDL_Texture* musicOnTexture;
+    SDL_Texture* musicOffTexture;
+    SDL_Rect musicRect;
+    bool isMusicOn = true;
 };
 
 #endif // _MAINMENU_H_

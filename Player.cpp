@@ -54,15 +54,28 @@ void Player::Update()
     if(Camera::camera.y < 0) Camera::camera.y = 0;
     if(Camera::camera.x > MAP_WIDTH - Camera::camera.w) Camera::camera.x = MAP_WIDTH - Camera::camera.w;
     if(Camera::camera.y > MAP_HEIGHT - Camera::camera.h) Camera::camera.y = MAP_HEIGHT - Camera::camera.h;
+
+    if(isHit && SDL_GetTicks() - hitTime >= 200)
+    {
+        isHit = false;
+    }
 }
 
 void Player::Render()
 {
+    if(isHit)
+    {
+        SDL_SetTextureColorMod(objTexture, 255, 100, 100);
+    }
+    else
+    {
+        SDL_SetTextureColorMod(objTexture, 255, 255, 255);
+    }
     SDL_Rect renderPos = { destRect.x - Camera::camera.x, destRect.y - Camera::camera.y, destRect.w, destRect.h};
     TextureManager::Draw(objTexture, srcRect, renderPos);
 }
 
-void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager)
+void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager, Mix_Chunk* shootSound)
 {
     if(Game::event.type == SDL_KEYDOWN && Game::event.key.keysym.sym == SDLK_SPACE)
     {
@@ -85,7 +98,8 @@ void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager)
             dy = 0;
         }
 
-        bulletManager.addBullet(xpos + TILE_SIZE/2, ypos + TILE_SIZE/2, dx, dy, "assets/images/dot.bmp");
+        bulletManager.addBullet(xpos + TILE_SIZE/2 - 40/2, ypos + TILE_SIZE/2 - 40/2 + 10 , dx, dy, "assets/images/fireball.png");
+        if(shootSound) Mix_PlayChannel(-1, shootSound, 0);
     }
     else if(Game::event.type == SDL_KEYDOWN && Game::event.key.repeat == 0)
     {
@@ -132,5 +146,7 @@ void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager)
 
 void Player::takeDamage(int damage)
 {
+    isHit = true;
+    hitTime = SDL_GetTicks();
     health -= damage;
 }
