@@ -10,6 +10,7 @@
 #include "Lion.h"
 #include "Blaze.h"
 #include <string>
+#include <fstream>
 
 SDL_Event Game::event;
 Player* player = nullptr;
@@ -77,6 +78,25 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         SDL_QueryTexture(pauseTexture, NULL, NULL, &pauseW, &pauseH);
         pauseRect = {SCREEN_WIDTH/2 - pauseW/2, SCREEN_HEIGHT/2 - pauseH/2, pauseW, pauseH};
 
+        //Load HPTexture
+        HPTexture = createTextTexture("HP", white);
+        int HPW, HPH;
+        SDL_QueryTexture(HPTexture, NULL, NULL, &HPW, &HPH);
+        HPRect = {10, 10, HPW, HPH};
+
+        //Hp bar
+        healthBackground = {10 + HPW + 10, 10, 200, HPH};
+        currenHealth = {healthBackground.x, 10, 200, HPH};
+
+        //load highs core from file
+        std::ifstream inFile("highscore.txt");
+        if(inFile)
+        {
+            inFile >> highscore;
+        }
+        inFile.close();
+
+
         isRunning = true;
     }
     mainMenu.init();
@@ -121,10 +141,12 @@ void Game::handleEvents()
                 isPaused = !isPaused;
                 if(isPaused)
                 {
+                    pauseStartTime = SDL_GetTicks();
                     Mix_PauseMusic();
                 }
                 else
                 {
+                    totalPausedTime = SDL_GetTicks() - pauseStartTime;
                     Mix_ResumeMusic();
                 }
             }
@@ -142,10 +164,9 @@ void Game::update()
 {
     if(!inMenu)
     {
-        Uint32 currentTime = SDL_GetTicks();
-
         if(!isPaused)
         {
+            Uint32 currentTime = SDL_GetTicks()- totalPausedTime;
             cnt++;
             std::cout<<"cnt: "<<cnt<<"         ";
             std::cout << "Camera: " << Camera::camera.x << ", " << Camera::camera.y << std::endl;
@@ -160,7 +181,7 @@ void Game::update()
                 }
             }
 
-            Uint32 elapsedTIme = currentTime - gameStartTime;
+            Uint32 elapsedTIme = SDL_GetTicks() - gameStartTime;
 
             //score by time survive
             if(currentTime - lastScoreTime >= 100)
@@ -169,7 +190,7 @@ void Game::update()
                 lastScoreTime = currentTime;
             }
 
-            if(currentTime - lastSpawnTime >= spawnInterval)
+            if(SDL_GetTicks() - lastSpawnTime >= spawnInterval)
             {
                 int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
                 int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
@@ -215,6 +236,17 @@ void Game::update()
                 if(enemyDieSound) Mix_PlayChannel(-1, enemyDieSound, 0);
             }
 
+            if(score > highscore)
+            {
+                highscore = score;
+                std::ofstream outFile("highscore.txt");
+                if(outFile)
+                {
+                    outFile << highscore;
+                }
+                outFile.close();
+            }
+
             if(player->getHealth() <= 0)
             {
                 isRunning = false;
@@ -228,6 +260,17 @@ void Game::update()
         int scoreW, scoreH;
         SDL_QueryTexture(scoreTexture, NULL, NULL, &scoreW, &scoreH);
         scoreRect = {SCREEN_WIDTH - scoreW - 10, 10, scoreW, scoreH};
+
+        //high score Texture
+        std::string highscoreText = "Highscore " + std::to_string(highscore);
+        SDL_DestroyTexture(highscoreTexture);
+        highscoreTexture = createTextTexture(highscoreText.c_str(), white);
+        int hsW, hsH;
+        SDL_QueryTexture(highscoreTexture, NULL, NULL, &hsW, &hsH);
+        highscoreRect = {SCREEN_WIDTH/2 - hsW/2, 10, hsW, hsH};
+
+        //health
+        currenHealth.w = 200*player->getHealth()/PLAYER_HEALTH;
     }
 }
 
@@ -250,6 +293,9 @@ void Game::render()
         //render score
         TextureManager::Draw(scoreTexture, {0, 0, scoreRect.w, scoreRect.h}, scoreRect);
 
+        //render high score
+        TextureManager::Draw(highscoreTexture, {0, 0, highscoreRect.w, highscoreRect.h}, highscoreRect);
+
         if(isPaused && pauseTexture)
         {
             SDL_Rect optimizedRect = pauseRect;
@@ -259,6 +305,15 @@ void Game::render()
             optimizedRect.y = SCREEN_HEIGHT/2 - optimizedRect.h/2;
             TextureManager::Draw(pauseTexture, {0, 0, pauseRect.w, pauseRect.h}, optimizedRect);
         }
+
+        //render HP and HP bar
+        TextureManager::Draw(HPTexture, {0, 0, HPRect.w, HPRect.h}, HPRect);
+        SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
+        SDL_RenderFillRect(Renderer::renderer, &healthBackground);
+        SDL_SetRenderDrawColor(Renderer::renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(Renderer::renderer, &currenHealth);
+        SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
+        SDL_RenderDrawRect(Renderer::renderer, &healthBackground);
 
         SDL_RenderPresent(Renderer::renderer);
     }
@@ -287,7 +342,8 @@ bool Game::running()
 
 void Game::addScore(int points)
 {
-    score += points;
+    if(!isPaused)
+        score += points;
 }
 
 SDL_Texture* Game::createTextTexture(const char* text, SDL_Color color)

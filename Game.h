@@ -68,5 +68,19 @@ private:
     bool isPaused = false;
     SDL_Texture* pauseTexture;
     SDL_Rect pauseRect;
+    Uint32 pauseStartTime = 0;
+    Uint32 totalPausedTime = 0;
+
+    //HP text texture
+    SDL_Texture* HPTexture = nullptr;
+    SDL_Rect HPRect;
+    //HP bar
+    SDL_Rect currenHealth;
+    SDL_Rect healthBackground;
+
+    //highscre
+    int highscore;
+    SDL_Texture* highscoreTexture = nullptr;
+    SDL_Rect highscoreRect;
 };
 #endif // _GAME_H_

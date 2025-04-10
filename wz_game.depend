@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
 140728031565466 <<<<<<< HEAD
 
-1744021882 source:f:\lap trinh\wizard_survival\main.cpp
+1744249995 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1744072672 f:\lap trinh\wizard_survival\game.h
+1744249995 f:\lap trinh\wizard_survival\game.h
 	"config.h"
 	<iostream>
 	<vector>
@@ -46,7 +46,7 @@
 
 1742769098 D
 
-1744063002 source:f:\lap trinh\wizard_survival\game.cpp
+1744257355 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -59,6 +59,7 @@
 	"Lion.h"
 	"Blaze.h"
 	<string>
+	<fstream>
 
 1744047468 source:f:\lap trinh\wizard_survival\texturemanager.cpp
 	"TextureManager.h"
@@ -84,7 +85,7 @@
 1744021881 f:\lap trinh\wizard_survival\map.h
 	"config.h"
 
-1744071182 source:f:\lap trinh\wizard_survival\player.cpp
+1744209414 source:f:\lap trinh\wizard_survival\player.cpp
 	"Player.h"
 	"Collision.h"
 	"TextureManager.h"
@@ -93,7 +94,7 @@
 	"MapData.h"
 	"Game.h"
 
-1744071130 f:\lap trinh\wizard_survival\player.h
+1744209414 f:\lap trinh\wizard_survival\player.h
 	"GameObject.h"
 	"BulletManager.h"
 	"config.h"
@@ -154,7 +155,7 @@
 	"Enemy.h"
 	"Player.h"
 
-1744049877 f:\lap trinh\wizard_survival\config.h
+1744208796 f:\lap trinh\wizard_survival\config.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -212,10 +213,10 @@
 
 1744034100 source:f:\lap trinh\wizard_survival\slimeboss.cpp
 
-1744064571 f:\lap trinh\wizard_survival\mainmenu.h
+1744248317 f:\lap trinh\wizard_survival\mainmenu.h
 	"config.h"
 
-1744064828 source:f:\lap trinh\wizard_survival\mainmenu.cpp
+1744193458 source:f:\lap trinh\wizard_survival\mainmenu.cpp
 	"MainMenu.h"
 	"TextureManager.h"
 	"Game.h"

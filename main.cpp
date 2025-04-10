@@ -15,9 +15,7 @@ int main(int argc, char* args[])
         game->handleEvents();
         game->update();
         game->render();
-
         frameTime = SDL_GetTicks() - frameStart;
-
         if(FrameDelay > frameTime){
             SDL_Delay(FrameDelay - frameTime);
         }

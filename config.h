@@ -19,6 +19,8 @@ const int MAP_TILE_HEIGHT = 25;
 
 const int BULLET_VEL = 10;
 
+const int PLAYER_HEALTH = 100;
+
 enum Direction
 {
     UP,
