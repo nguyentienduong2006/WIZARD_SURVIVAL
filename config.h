@@ -37,4 +37,12 @@ enum EnemyDirection
     E_LEFT
 };
 
+enum GameState
+{
+    MENU,
+    PLAYING,
+    PAUSED,
+    GAME_OVER
+};
+
 #endif // _CONFIG_H_

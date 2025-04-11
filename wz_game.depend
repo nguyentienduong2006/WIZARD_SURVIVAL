@@ -4,7 +4,7 @@
 1744249995 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1744249995 f:\lap trinh\wizard_survival\game.h
+1744359405 f:\lap trinh\wizard_survival\game.h
 	"config.h"
 	<iostream>
 	<vector>
@@ -46,7 +46,7 @@
 
 1742769098 D
 
-1744257355 source:f:\lap trinh\wizard_survival\game.cpp
+1744361190 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -155,7 +155,7 @@
 	"Enemy.h"
 	"Player.h"
 
-1744208796 f:\lap trinh\wizard_survival\config.h
+1744358459 f:\lap trinh\wizard_survival\config.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>

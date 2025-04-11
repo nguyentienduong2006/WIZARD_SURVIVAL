@@ -21,7 +21,7 @@ BulletManager bulletManager;
 Game::Game()
 {
     isRunning = false;
-    inMenu = true;
+    currentState = MENU;
     Camera::camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 }
 
@@ -121,51 +121,59 @@ void Game::handleEvents()
                 }
             }
 
-        if(inMenu)
+        //handle events
+        switch(currentState)
         {
-            bool startGame = false;
-            mainMenu.handleEvent(isRunning, startGame, buttonClickSound);
-            if(startGame)
+        case MENU:
             {
-                inMenu = false;
-                player = new Player("assets/images/witch.png", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
-                map = new Map();
-                gameStartTime = SDL_GetTicks();
-                lastScoreTime = gameStartTime;
+                bool startGame = false;
+                mainMenu.handleEvent(isRunning, startGame, buttonClickSound);
+                if(startGame)
+                {
+                    currentState = PLAYING;
+                    player = new Player("assets/images/witch.png", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+                    map = new Map();
+                    gameStartTime = SDL_GetTicks();
+                    lastScoreTime = gameStartTime;
+                }
             }
-        }
-        else
-        {
+            break;
+        case PLAYING:
             if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
-                isPaused = !isPaused;
-                if(isPaused)
-                {
-                    pauseStartTime = SDL_GetTicks();
-                    Mix_PauseMusic();
-                }
-                else
-                {
-                    totalPausedTime = SDL_GetTicks() - pauseStartTime;
-                    Mix_ResumeMusic();
-                }
+                currentState = PAUSED;
+                pauseStartTime = SDL_GetTicks();
+                Mix_PauseMusic();
             }
             if(event.type == SDL_QUIT){
                     isRunning = false;
             }
-            if(!isPaused && player){
+            if(player)
+            {
                 player->handleEvent(Game::event, bulletManager, shootSound);
             }
+            break;
+        case PAUSED:
+            if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+            {
+                currentState = PLAYING;
+                totalPausedTime += (SDL_GetTicks() - pauseStartTime);
+                Mix_ResumeMusic();
+            }
+            if(event.type == SDL_QUIT)
+            {
+                isRunning = false;
+            }
+            break;
         }
+
     }
 }
 
 void Game::update()
 {
-    if(!inMenu)
+    if(currentState == PLAYING)
     {
-        if(!isPaused)
-        {
             Uint32 currentTime = SDL_GetTicks()- totalPausedTime;
             cnt++;
             std::cout<<"cnt: "<<cnt<<"         ";
@@ -190,7 +198,7 @@ void Game::update()
                 lastScoreTime = currentTime;
             }
 
-            if(SDL_GetTicks() - lastSpawnTime >= spawnInterval)
+            if(currentTime - lastSpawnTime >= spawnInterval)
             {
                 int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
                 int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
@@ -210,11 +218,12 @@ void Game::update()
                     break;
                 }
 
-                if(spawnInterval > 500)
+                lastSpawnTime = currentTime;
+
+                if(spawnInterval > 1000)
                 {
                     spawnInterval -= 100;
                 }
-                lastSpawnTime = currentTime;
 
                 if(elapsedTIme >= FIVE_MINUTE && (currentTime - lastSpawnTime) % ONE_MINUTE == 0)
                 {
@@ -251,7 +260,6 @@ void Game::update()
             {
                 isRunning = false;
             }
-        }
 
         //score Texture
         std::string scoreText = "Score " + std::to_string(score);
@@ -279,12 +287,12 @@ void Game::render()
     SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
     SDL_RenderClear(Renderer::renderer);
 
-    if(inMenu)
+    switch(currentState)
     {
+    case MENU:
         mainMenu.render();
-    }
-    else
-    {
+        break;
+    case PLAYING: case PAUSED:
         map->DrawMap();
         player->Render();
         enemyManager.renderEnemies();
@@ -296,7 +304,17 @@ void Game::render()
         //render high score
         TextureManager::Draw(highscoreTexture, {0, 0, highscoreRect.w, highscoreRect.h}, highscoreRect);
 
-        if(isPaused && pauseTexture)
+        //render HP
+        TextureManager::Draw(HPTexture, {0, 0, HPRect.w, HPRect.h}, HPRect);
+        SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
+        SDL_RenderFillRect(Renderer::renderer, &healthBackground);
+        SDL_SetRenderDrawColor(Renderer::renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(Renderer::renderer, &currenHealth);
+        SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
+        SDL_RenderDrawRect(Renderer::renderer, &healthBackground);
+
+        //render PAUSE TEXT
+        if(currentState == PAUSED && pauseTexture)
         {
             SDL_Rect optimizedRect = pauseRect;
             optimizedRect.w = 5*optimizedRect.w;
@@ -306,16 +324,8 @@ void Game::render()
             TextureManager::Draw(pauseTexture, {0, 0, pauseRect.w, pauseRect.h}, optimizedRect);
         }
 
-        //render HP and HP bar
-        TextureManager::Draw(HPTexture, {0, 0, HPRect.w, HPRect.h}, HPRect);
-        SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
-        SDL_RenderFillRect(Renderer::renderer, &healthBackground);
-        SDL_SetRenderDrawColor(Renderer::renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(Renderer::renderer, &currenHealth);
-        SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
-        SDL_RenderDrawRect(Renderer::renderer, &healthBackground);
-
         SDL_RenderPresent(Renderer::renderer);
+        break;
     }
 }
 
@@ -342,7 +352,7 @@ bool Game::running()
 
 void Game::addScore(int points)
 {
-    if(!isPaused)
+    if(currentState == PLAYING)
         score += points;
 }
 

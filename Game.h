@@ -43,7 +43,6 @@ private:
 
     //menu
     MainMenu mainMenu;
-    bool inMenu;
 
     //score system
     int score = 0;
@@ -65,7 +64,7 @@ private:
     Uint32 bgMusicDelay = 3000;
 
     //pause
-    bool isPaused = false;
+    //bool isPaused = false;
     SDL_Texture* pauseTexture;
     SDL_Rect pauseRect;
     Uint32 pauseStartTime = 0;
@@ -78,9 +77,12 @@ private:
     SDL_Rect currenHealth;
     SDL_Rect healthBackground;
 
-    //highscre
+    //high score
     int highscore;
     SDL_Texture* highscoreTexture = nullptr;
     SDL_Rect highscoreRect;
+
+    //Game State
+    GameState currentState;
 };
 #endif // _GAME_H_
