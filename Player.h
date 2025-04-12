@@ -13,7 +13,7 @@ public:
     ~Player() {}
     void Update() override;
     void Render() override;
-    void handleEvent(SDL_Event& event, BulletManager& bulletManager, Mix_Chunk* shootSound);
+    void handleEvent(BulletManager& bulletManager, Mix_Chunk* shootSound);
 
     static const int PLAYER_VEL = 5;
 
@@ -22,6 +22,7 @@ public:
     int getY() const {return ypos;}
     int getHealth() const {return health; }
     void takeDamage(int damage);
+    void checkBulletCollision(BulletManager& bulletManager);
 private:
     int health;
     int frame = 0;

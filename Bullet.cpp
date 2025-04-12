@@ -2,7 +2,7 @@
 #include "TextureManager.h"
 #include "Game.h"
 
-Bullet::Bullet(int x, int y, int dx, int dy, const char* textureSheet) : GameObject(textureSheet, x, y)
+Bullet::Bullet(int x, int y, int dx, int dy, const char* textureSheet, bool _enemyBullet) : GameObject(textureSheet, x, y), enemyBullet(_enemyBullet)
 {
     xvel = dx;
     yvel = dy;

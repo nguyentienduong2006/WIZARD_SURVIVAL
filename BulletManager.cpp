@@ -7,9 +7,9 @@ BulletManager::~BulletManager()
     clearBullets();
 }
 
-void BulletManager::addBullet(int x, int y, int dx, int dy, const char* texture)
+void BulletManager::addBullet(int x, int y, int dx, int dy, const char* texture, bool _enemyBullet)
 {
-    bullets.push_back(new Bullet(x, y, dx, dy, texture));
+    bullets.push_back(new Bullet(x, y, dx, dy, texture, _enemyBullet));
 }
 
 void BulletManager::updateBullets()

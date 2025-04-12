@@ -9,7 +9,7 @@ class BulletManager
 public:
     BulletManager() = default;
     ~BulletManager();
-    void addBullet(int x, int y, int dx, int dy, const char* texture);
+    void addBullet(int x, int y, int dx, int dy, const char* texture, bool _enemyBullet);
     void updateBullets();
     void renderBullets();
     void clearBullets();

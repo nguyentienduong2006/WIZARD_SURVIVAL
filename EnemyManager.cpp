@@ -48,24 +48,30 @@ int EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
         bool enemyHit = false;
         for( auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
         {
-            if(*bulletIt == nullptr)
+            bool isEnemyBullet;
+            isEnemyBullet = (*bulletIt)->isEnemyBullet();
+            if(!isEnemyBullet)
             {
-                bulletIt = bullets.erase(bulletIt);
-                continue;
+                if(*bulletIt == nullptr)
+                {
+                    bulletIt = bullets.erase(bulletIt);
+                    continue;
+                }
+                SDL_Rect enemyRect = (*enemyIt)->getDestRect();
+                SDL_Rect bulletRect = (*bulletIt)->getDestRect();
+                if(SDL_HasIntersection(&enemyRect, &bulletRect))
+                {
+                    (*enemyIt) -> takeDamage((*bulletIt)->getDamage());
+                    delete *bulletIt;
+                    bulletIt = bullets.erase(bulletIt);
+                    enemyHit = true;
+                }
+                else
+                {
+                    ++bulletIt;
+                }
             }
-            SDL_Rect enemyRect = (*enemyIt)->getDestRect();
-            SDL_Rect bulletRect = (*bulletIt)->getDestRect();
-            if(SDL_HasIntersection(&enemyRect, &bulletRect))
-            {
-                (*enemyIt) -> takeDamage((*bulletIt)->getDamage());
-                delete *bulletIt;
-                bulletIt = bullets.erase(bulletIt);
-                enemyHit = true;
-            }
-            else
-            {
-                ++bulletIt;
-            }
+            else ++bulletIt;
         }
         if(enemyHit && (*enemyIt)->getHealth() <= 0)
         {

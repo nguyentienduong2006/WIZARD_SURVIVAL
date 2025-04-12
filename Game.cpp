@@ -9,6 +9,9 @@
 #include "BulletManager.h"
 #include "Lion.h"
 #include "Blaze.h"
+#include "SlimeBoss.h"
+#include "MapData.h"
+#include "Collision.h"
 #include <string>
 #include <fstream>
 
@@ -88,6 +91,24 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         healthBackground = {10 + HPW + 10, 10, 200, HPH};
         currenHealth = {healthBackground.x, 10, 200, HPH};
 
+        //game over
+        gameOverBackground = TextureManager::LoadTexture("assets/images/gameOverBackground.png");
+
+        gameOverTexture = createTextTexture("GAME OVER", white);
+        int textW, textH;
+        SDL_QueryTexture(gameOverTexture, NULL, NULL, &textW, &textH);
+        gameOverRect = {SCREEN_WIDTH/2 - textW/2, SCREEN_HEIGHT/2 - textH/2, textW, textH};
+
+        menuTexture = createTextTexture("MENU", white);
+        int menuW, menuH;
+        SDL_QueryTexture(menuTexture, NULL, NULL, &menuW, &menuH);
+        menuRect = {SCREEN_WIDTH/2 - menuW/2, gameOverRect.y + gameOverRect.h + 30, menuW, menuH};
+
+        replayTexture = createTextTexture("REPLAY", white);
+        int replayW, replayH;
+        SDL_QueryTexture(replayTexture, NULL, NULL, &replayW, &replayH);
+        replayRect = {SCREEN_WIDTH/2 - replayW/2, menuRect.y + menuRect.h + 30, replayW, replayH};
+
         //load highs core from file
         std::ifstream inFile("highscore.txt");
         if(inFile)
@@ -130,11 +151,21 @@ void Game::handleEvents()
                 mainMenu.handleEvent(isRunning, startGame, buttonClickSound);
                 if(startGame)
                 {
+                    if(player) delete player;
+                    if(map) delete map;
+                    bulletManager.clearBullets();
+                    enemyManager.clearEnemies();
+
                     currentState = PLAYING;
                     player = new Player("assets/images/witch.png", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
                     map = new Map();
+                    score = 0;
                     gameStartTime = SDL_GetTicks();
+                    totalPausedTime = 0;
                     lastScoreTime = gameStartTime;
+                    lastSpawnTime = 0;
+                    spawnInterval = 5000;
+                    bgMusicStarted = false;
                 }
             }
             break;
@@ -150,7 +181,7 @@ void Game::handleEvents()
             }
             if(player)
             {
-                player->handleEvent(Game::event, bulletManager, shootSound);
+                player->handleEvent(bulletManager, shootSound);
             }
             break;
         case PAUSED:
@@ -165,6 +196,64 @@ void Game::handleEvents()
                 isRunning = false;
             }
             break;
+        case GAME_OVER:
+            {
+                Mix_HaltMusic();
+                if(event.type == SDL_QUIT)
+                {
+                    isRunning = false;
+                }
+                //get mouse
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+                SDL_Point mousePoint = {mouseX, mouseY};
+                //if hover
+                if(SDL_PointInRect(&mousePoint, &menuRect))
+                {
+                    menuHovered = true;
+                }
+                else
+                {
+                    menuHovered = false;
+                }
+                if(SDL_PointInRect(&mousePoint, &replayRect))
+                {
+                    replayHovered = true;
+                }
+                else
+                {
+                    replayHovered = false;
+                }
+                //click
+                if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+                {
+                    if(menuHovered)
+                    {
+                        if(buttonClickSound) Mix_PlayChannel(-1, buttonClickSound, 0);
+                        //isRunning = false;
+                        currentState = MENU;
+                    }
+                    if(replayHovered)
+                    {
+                        if(player) delete player;
+                        if(map) delete map;
+                        bulletManager.clearBullets();
+                        enemyManager.clearEnemies();
+
+                        player = new Player("assets/images/witch.png", SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+                        map = new Map();
+                        score = 0;
+                        gameStartTime = SDL_GetTicks();
+                        totalPausedTime = 0;
+                        lastScoreTime = gameStartTime;
+                        lastSpawnTime = 0;
+                        spawnInterval = 5000;
+                        bgMusicStarted = false;
+
+                        currentState = PLAYING;
+                    }
+                }
+            }
         }
 
     }
@@ -189,7 +278,7 @@ void Game::update()
                 }
             }
 
-            Uint32 elapsedTIme = SDL_GetTicks() - gameStartTime;
+            Uint32 elapsedTIme = currentTime - gameStartTime;
 
             //score by time survive
             if(currentTime - lastScoreTime >= 100)
@@ -200,10 +289,15 @@ void Game::update()
 
             if(currentTime - lastSpawnTime >= spawnInterval)
             {
-                int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
-                int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
-
-                int enemyType = std::rand()%3;
+                int spawnX;
+                int spawnY;
+                do
+                {
+                    spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
+                    spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
+                }
+                while(touchesWall(spawnX, spawnY, MapData::lv1));
+                    int enemyType = std::rand()%4;
 
                 switch(enemyType)
                 {
@@ -216,6 +310,9 @@ void Game::update()
                 case 2:
                     enemyManager.addEnemy(new Blaze(spawnX, spawnY));
                     break;
+                case 3:
+                    enemyManager.addEnemy(new SlimeBoss(spawnX, spawnY));//test
+                    break;//test
                 }
 
                 lastSpawnTime = currentTime;
@@ -231,6 +328,7 @@ void Game::update()
                     //int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
                     //spawn BOSS
                 }
+
             }
 
             player->Update();
@@ -244,6 +342,7 @@ void Game::update()
                 score += enemiesKilled*10;
                 if(enemyDieSound) Mix_PlayChannel(-1, enemyDieSound, 0);
             }
+            player->checkBulletCollision(bulletManager);
 
             if(score > highscore)
             {
@@ -258,7 +357,7 @@ void Game::update()
 
             if(player->getHealth() <= 0)
             {
-                isRunning = false;
+                currentState = GAME_OVER;
             }
 
         //score Texture
@@ -280,6 +379,7 @@ void Game::update()
         //health
         currenHealth.w = 200*player->getHealth()/PLAYER_HEALTH;
     }
+
 }
 
 void Game::render()
@@ -293,8 +393,8 @@ void Game::render()
         mainMenu.render();
         break;
     case PLAYING: case PAUSED:
-        map->DrawMap();
-        player->Render();
+        if(map) map->DrawMap();
+        if(player) player->Render();
         enemyManager.renderEnemies();
         bulletManager.renderBullets();
 
@@ -324,17 +424,60 @@ void Game::render()
             TextureManager::Draw(pauseTexture, {0, 0, pauseRect.w, pauseRect.h}, optimizedRect);
         }
 
-        SDL_RenderPresent(Renderer::renderer);
+        break;
+    case GAME_OVER:
+        SDL_RenderClear(Renderer::renderer);
+        TextureManager::Draw(gameOverBackground, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+        TextureManager::Draw(gameOverTexture, {0, 0, gameOverRect.w, gameOverRect.h}, gameOverRect);
+        SDL_Color menuColor = menuHovered?hoverColor:white;
+        SDL_DestroyTexture(menuTexture);
+        menuTexture = createTextTexture("MENU", menuColor);
+        TextureManager::Draw(menuTexture, {0, 0, menuRect.w, menuRect.h}, menuRect);
+        SDL_Color replayColor = replayHovered?hoverColor:white;
+        SDL_DestroyTexture(replayTexture);
+        replayTexture = createTextTexture("REPLAY", replayColor);
+        TextureManager::Draw(replayTexture, {0, 0, replayRect.w, replayRect.h}, replayRect);
+
+        //render score
+        TextureManager::Draw(scoreTexture, {0, 0, scoreRect.w, scoreRect.h}, scoreRect);
+
+        //render high score
+        TextureManager::Draw(highscoreTexture, {0, 0, highscoreRect.w, highscoreRect.h}, highscoreRect);
         break;
     }
+    SDL_RenderPresent(Renderer::renderer);
 }
 
 void Game::clean()
 {
-    delete player;
+    if(player)
+    {
+        delete player;
+        player = nullptr;
+    }
     enemyManager.clearEnemies();
-    delete map;
+    if(map)
+    {
+        delete map;
+        map = nullptr;
+    }
     bulletManager.clearBullets();
+
+    if(scoreFont) TTF_CloseFont(scoreFont);
+    if(scoreTexture) SDL_DestroyTexture(scoreTexture);
+    if(highscoreTexture) SDL_DestroyTexture(highscoreTexture);
+    if(pauseTexture) SDL_DestroyTexture(pauseTexture);
+    if(HPTexture) SDL_DestroyTexture(HPTexture);
+    if(gameOverTexture) SDL_DestroyTexture(gameOverTexture);
+    if(gameOverBackground) SDL_DestroyTexture(gameOverBackground);
+    if(menuTexture) SDL_DestroyTexture(menuTexture);
+    if(replayTexture) SDL_DestroyTexture(replayTexture);
+
+    if(backgroundMusic) Mix_FreeMusic(backgroundMusic);
+    if(shootSound) Mix_FreeChunk(shootSound);
+    if(enemyDieSound) Mix_FreeChunk(enemyDieSound);
+    if(buttonClickSound) Mix_FreeChunk(buttonClickSound);
+    Mix_CloseAudio();
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(Renderer::renderer);
@@ -358,6 +501,7 @@ void Game::addScore(int points)
 
 SDL_Texture* Game::createTextTexture(const char* text, SDL_Color color)
 {
+    if(!scoreFont || !Renderer::renderer) return nullptr;
     SDL_Surface* tempSurface = TTF_RenderText_Solid(scoreFont, text, color);
     SDL_Texture* newTexture = SDL_CreateTextureFromSurface(Renderer::renderer, tempSurface);
     SDL_FreeSurface(tempSurface);

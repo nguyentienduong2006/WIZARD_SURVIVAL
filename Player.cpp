@@ -5,6 +5,8 @@
 #include "Bullet.h"
 #include "MapData.h"
 #include "Game.h"
+#include "BulletManager.h"
+#include <vector>
 
 
 Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet, x, y)
@@ -75,9 +77,9 @@ void Player::Render()
     TextureManager::Draw(objTexture, srcRect, renderPos);
 }
 
-void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager, Mix_Chunk* shootSound)
+void Player::handleEvent(BulletManager& bulletManager, Mix_Chunk* shootSound)
 {
-    if(Game::event.type == SDL_KEYDOWN && Game::event.key.keysym.sym == SDLK_SPACE)
+    if(Game::event.type == SDL_KEYDOWN && Game::event.key.keysym.sym == SDLK_SPACE && Game::event.key.repeat == 0)
     {
         int dx = 0, dy = 0;
         if(direction == E_UP)
@@ -98,7 +100,7 @@ void Player::handleEvent(SDL_Event& event, BulletManager& bulletManager, Mix_Chu
             dy = 0;
         }
 
-        bulletManager.addBullet(xpos + TILE_SIZE/2 - 40/2, ypos + TILE_SIZE/2 - 40/2 + 10 , dx, dy, "assets/images/fireball.png");
+        bulletManager.addBullet(xpos + TILE_SIZE/2 - 40/2, ypos + TILE_SIZE/2 - 40/2 + 10 , dx, dy, "assets/images/fireball.png", false);
         if(shootSound) Mix_PlayChannel(-1, shootSound, 0);
     }
     else if(Game::event.type == SDL_KEYDOWN && Game::event.key.repeat == 0)
@@ -149,4 +151,31 @@ void Player::takeDamage(int damage)
     isHit = true;
     hitTime = SDL_GetTicks();
     health -= damage;
+}
+
+void Player::checkBulletCollision(BulletManager& bulletManager)
+{
+    auto& bullets = bulletManager.getBullets();
+    for(auto bulletIt = bullets.begin(); bulletIt != bullets.end();)
+    {
+        bool isEnemyBullet = (*bulletIt)->isEnemyBullet();
+        if(isEnemyBullet)
+        {
+            if(*bulletIt == nullptr)
+            {
+                bulletIt = bullets.erase(bulletIt);
+                continue;
+            }
+            SDL_Rect bulletRect = (*bulletIt)->getDestRect();
+            SDL_Rect playerRect = getDestRect();
+            if(SDL_HasIntersection(&bulletRect, &playerRect))
+            {
+                takeDamage(5);
+                delete *bulletIt;
+                bulletIt = bullets.erase(bulletIt);
+            }
+            else bulletIt++;
+        }
+        else bulletIt++;
+    }
 }

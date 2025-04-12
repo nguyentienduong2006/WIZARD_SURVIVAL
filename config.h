@@ -21,14 +21,6 @@ const int BULLET_VEL = 10;
 
 const int PLAYER_HEALTH = 100;
 
-enum Direction
-{
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT
-};
-
 enum EnemyDirection
 {
     E_UP,
@@ -43,6 +35,14 @@ enum GameState
     PLAYING,
     PAUSED,
     GAME_OVER
+};
+
+enum BossDirection
+{
+    B_DOWN,
+    B_LEFT,
+    B_RIGHT,
+    B_UP
 };
 
 #endif // _CONFIG_H_

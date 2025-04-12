@@ -51,8 +51,6 @@ private:
     SDL_Texture* scoreTexture = NULL;
     SDL_Rect scoreRect;
 
-    SDL_Color white = {255, 255, 255, 255};
-
     SDL_Texture* createTextTexture(const char* text, SDL_Color color);
 
     //sound
@@ -84,5 +82,19 @@ private:
 
     //Game State
     GameState currentState;
+
+    //game over
+    SDL_Texture* gameOverBackground = nullptr;
+    SDL_Texture* gameOverTexture = nullptr;
+    SDL_Rect gameOverRect;
+    SDL_Texture* menuTexture = nullptr;
+    SDL_Rect menuRect;
+    SDL_Texture* replayTexture = nullptr;
+    SDL_Rect replayRect;
+    bool menuHovered = false;
+    bool replayHovered = false;
+
+    SDL_Color white = {255, 255, 255, 255};
+    SDL_Color hoverColor = {255, 100, 100, 255};
 };
 #endif // _GAME_H_

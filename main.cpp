@@ -8,7 +8,7 @@ int main(int argc, char* args[])
     Uint32 frameStart;
     int frameTime;
     game = new Game();
-    game->init("Wizard survival");
+    game->init("witch survival");
     while( game->running() )
     {
         frameStart = SDL_GetTicks();
