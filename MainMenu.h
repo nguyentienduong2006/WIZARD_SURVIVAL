@@ -17,12 +17,12 @@ private:
     TTF_Font* gFont;
     SDL_Texture* backgroundTexture;
     SDL_Texture* startTexture;
-    SDL_Texture* menuTexture;
+    SDL_Texture* exitTexture;
     SDL_Rect startRect;
     SDL_Rect exitRect;
 
     bool startHovered = false;
-    bool menuHovered = false;
+    bool exitHovered = false;
 
     SDL_Texture* createTextTexture(const char* text, SDL_Color color);
 
@@ -38,6 +38,17 @@ private:
 
     SDL_Color white = {255, 255, 255, 255};
     SDL_Color hoverColor = {255, 100, 100, 255};
+
+    //help
+    SDL_Texture* helpBackground;
+    SDL_Texture* quitTexture;
+    bool needHelp;
+    SDL_Rect quitRect;
+
+    SDL_Texture* helpButtonTexture;
+    SDL_Rect helpButtonRect;
+    bool helpHovered;
+    bool quitHovered;
 };
 
 #endif // _MAINMENU_H_

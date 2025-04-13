@@ -62,9 +62,8 @@ private:
     Uint32 bgMusicDelay = 3000;
 
     //pause
-    //bool isPaused = false;
-    SDL_Texture* pauseTexture;
-    SDL_Rect pauseRect;
+    SDL_Texture* pauseBackgroundTexture;
+    SDL_Rect pauseBackgroundRect;
     Uint32 pauseStartTime = 0;
     Uint32 totalPausedTime = 0;
 

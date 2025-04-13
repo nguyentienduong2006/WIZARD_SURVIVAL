@@ -70,6 +70,7 @@ void Orc::Update()
     }
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
+
 }
 
 

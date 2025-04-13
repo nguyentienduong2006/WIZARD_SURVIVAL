@@ -12,6 +12,7 @@
 Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet, x, y)
 {
     health = 100;
+    hurtSound = Mix_LoadWAV("assets/sounds/enemyDeath.wav");
 }
 void Player::Update()
 {
@@ -130,16 +131,16 @@ void Player::handleEvent(BulletManager& bulletManager, Mix_Chunk* shootSound)
         switch(Game::event.key.keysym.sym)
         {
         case SDLK_w:
-            yvel += PLAYER_VEL;
+            yvel = 0;
             break;
         case SDLK_s:
-            yvel -= PLAYER_VEL;
+            yvel = 0;
             break;
         case SDLK_a:
-            xvel += PLAYER_VEL;
+            xvel = 0;
             break;
         case SDLK_d:
-            xvel -= PLAYER_VEL;
+            xvel = 0;
             break;
         }
     }
@@ -148,6 +149,7 @@ void Player::handleEvent(BulletManager& bulletManager, Mix_Chunk* shootSound)
 
 void Player::takeDamage(int damage)
 {
+    if(hurtSound) Mix_PlayChannel(-1, hurtSound, 0);
     isHit = true;
     hitTime = SDL_GetTicks();
     health -= damage;
@@ -178,4 +180,10 @@ void Player::checkBulletCollision(BulletManager& bulletManager)
         }
         else bulletIt++;
     }
+}
+
+void Player::stopMoving()
+{
+    xvel = 0;
+    yvel = 0;
 }

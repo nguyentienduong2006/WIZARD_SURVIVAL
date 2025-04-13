@@ -8,16 +8,22 @@ MainMenu::MainMenu()
     gFont = NULL;
     backgroundTexture = NULL;
     startTexture = NULL;
-    menuTexture = NULL;
+    exitTexture = NULL;
     soundOnTexture = NULL;
     soundOffTexture = NULL;
     musicOnTexture = NULL;
     musicOffTexture = NULL;
+    helpBackground = NULL;
+    quitTexture = NULL;
+    helpButtonTexture = nullptr;
 
     startHovered = false;
-    menuHovered = false;
+    exitHovered = false;
     isSoundOn = true;
     isMusicOn = true;
+    needHelp = false;
+    helpHovered = false;
+    quitHovered = false;
 }
 
 MainMenu::~MainMenu()
@@ -25,11 +31,14 @@ MainMenu::~MainMenu()
     if(gFont) TTF_CloseFont(gFont);
     if(backgroundTexture) SDL_DestroyTexture(backgroundTexture);
     if(startTexture) SDL_DestroyTexture(startTexture);
-    if(menuTexture) SDL_DestroyTexture(menuTexture);
+    if(exitTexture) SDL_DestroyTexture(exitTexture);
     if(soundOnTexture) SDL_DestroyTexture(soundOnTexture);
     if(soundOffTexture) SDL_DestroyTexture(soundOffTexture);
     if(musicOnTexture) SDL_DestroyTexture(musicOnTexture);
     if(musicOffTexture) SDL_DestroyTexture(musicOffTexture);
+    if(helpBackground) SDL_DestroyTexture(helpBackground);
+    if(quitTexture) SDL_DestroyTexture(quitTexture);
+    if(helpButtonTexture) SDL_DestroyTexture(helpButtonTexture);
 }
 
 void MainMenu::init()
@@ -49,13 +58,19 @@ void MainMenu::init()
     startTexture = createTextTexture("START", white);
     int startW, startH;
     SDL_QueryTexture(startTexture, NULL, NULL, &startW, &startH);
-    startRect = {SCREEN_WIDTH/2- startW/2, SCREEN_HEIGHT*6/10 - 50, startW, startH};
+    startRect = {SCREEN_WIDTH/2- startW/2, SCREEN_HEIGHT/2 , startW, startH};
 
-    //create menuTexture
-    menuTexture = createTextTexture("EXIT", white);
+    //help button
+    helpButtonTexture = createTextTexture("HELP", white);
+    int helpW, helpH;
+    SDL_QueryTexture(helpButtonTexture, nullptr, nullptr, &helpW, &helpH);
+    helpButtonRect = {SCREEN_WIDTH/2 - helpW/2, SCREEN_HEIGHT/2 + 100, helpW, helpH};
+
+    //create exitTexture
+    exitTexture = createTextTexture("EXIT", white);
     int exitW, exitH;
-    SDL_QueryTexture(menuTexture, NULL, NULL, &exitW, &exitH);
-    exitRect = {SCREEN_WIDTH/2 - exitW/2, SCREEN_HEIGHT*6/10 + 50, exitW, exitH};
+    SDL_QueryTexture(exitTexture, NULL, NULL, &exitW, &exitH);
+    exitRect = {SCREEN_WIDTH/2 - exitW/2, SCREEN_HEIGHT/2 + 200, exitW, exitH};
 
     //soundButton
     soundOnTexture = TextureManager::LoadTexture("assets/images/soundOn.png");
@@ -66,6 +81,14 @@ void MainMenu::init()
     musicOnTexture = TextureManager::LoadTexture("assets/images/musicOn.png");
     musicOffTexture = TextureManager::LoadTexture("assets/images/musicOff.png");
     musicRect = {10, 10 + TILE_SIZE + 10, TILE_SIZE, TILE_SIZE};
+
+    //help
+    helpBackground = TextureManager::LoadTexture("assets/images/help.png");
+    quitTexture = TextureManager::LoadTexture("assets/images/quit.png");
+    int quitW, quitH;
+    SDL_QueryTexture(quitTexture, nullptr, nullptr, &quitW,&quitH);
+    quitRect = {SCREEN_WIDTH - quitW, 0, quitW, quitH};
+
 }
 
 SDL_Texture* MainMenu::createTextTexture(const char* text, SDL_Color color)
@@ -92,7 +115,9 @@ void MainMenu::handleEvent(bool& isRunning, bool& startGame, Mix_Chunk* buttonCl
     SDL_Point mousePoint = {mouseX, mouseY};
 
     startHovered = SDL_PointInRect(&mousePoint, &startRect);
-    menuHovered = SDL_PointInRect(&mousePoint, &exitRect);
+    exitHovered = SDL_PointInRect(&mousePoint, &exitRect);
+    quitHovered = needHelp && SDL_PointInRect(&mousePoint, &quitRect);
+    helpHovered = SDL_PointInRect(&mousePoint, &helpButtonRect);
 
     if(Game::event.type == SDL_MOUSEBUTTONDOWN && Game::event.button.button == SDL_BUTTON_LEFT)
     {
@@ -102,12 +127,22 @@ void MainMenu::handleEvent(bool& isRunning, bool& startGame, Mix_Chunk* buttonCl
             startGame = true;
             isRunning = true;
         }
-        if(menuHovered)
+        if(helpHovered)
+        {
+            if(buttonClickSound) Mix_PlayChannel(-1, buttonClickSound, 0);
+            needHelp = true;
+        }
+        if(exitHovered)
         {
             if(buttonClickSound) Mix_PlayChannel(-1, buttonClickSound, 0);
             startGame = false;
             isRunning = false;
             return;
+        }
+        if(needHelp && quitHovered)
+        {
+            if(buttonClickSound) Mix_PlayChannel(-1, buttonClickSound, 0);
+            needHelp = false;
         }
         if(SDL_PointInRect(&mousePoint, &soundRect))
         {
@@ -151,10 +186,10 @@ void MainMenu::render()
     if(startTexture) TextureManager::Draw(startTexture, {0, 0, startRect.w, startRect.h}, startRect);
 
     //render exit
-    SDL_Color exitColor = menuHovered?hoverColor:white;
-    SDL_DestroyTexture(menuTexture);
-    menuTexture = createTextTexture("Exit", exitColor);
-    if(menuTexture) TextureManager::Draw(menuTexture, {0, 0, exitRect.w, exitRect.h}, exitRect);
+    SDL_Color exitColor = exitHovered?hoverColor:white;
+    SDL_DestroyTexture(exitTexture);
+    exitTexture = createTextTexture("Exit", exitColor);
+    if(exitTexture) TextureManager::Draw(exitTexture, {0, 0, exitRect.w, exitRect.h}, exitRect);
 
     //render volumeButton
     SDL_Texture* currenSoundTexture = isSoundOn?soundOnTexture:soundOffTexture;
@@ -163,5 +198,24 @@ void MainMenu::render()
     //render musicButton
     SDL_Texture* currentMusicTexture = isMusicOn?musicOnTexture:musicOffTexture;
     if(currentMusicTexture) TextureManager::Draw(currentMusicTexture, {0, 0, TILE_SIZE, TILE_SIZE}, musicRect);
+
+    SDL_Color helpColor = helpHovered?hoverColor:white;
+    SDL_DestroyTexture(helpButtonTexture);
+    helpButtonTexture = createTextTexture("HELP", helpColor);
+    if(helpButtonTexture) TextureManager::Draw(helpButtonTexture, {0, 0, helpButtonRect.w, helpButtonRect.h}, helpButtonRect);
+
+    if(needHelp)
+    {
+        TextureManager::Draw(helpBackground, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+        if(quitHovered)
+        {
+            SDL_SetTextureColorMod(quitTexture, 255, 100, 100);
+        }
+        else
+        {
+            SDL_SetTextureColorMod(quitTexture, 255, 255, 255);
+        }
+        TextureManager::Draw(quitTexture, {0, 0, quitRect.w, quitRect.h}, quitRect);
+    }
 
 }

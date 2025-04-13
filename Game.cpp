@@ -76,10 +76,8 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         enemyDieSound = Mix_LoadWAV("assets/sounds/enemyDeath.wav");
 
         //Pause
-        pauseTexture = createTextTexture("PAUSE", white);
-        int pauseW,pauseH;
-        SDL_QueryTexture(pauseTexture, NULL, NULL, &pauseW, &pauseH);
-        pauseRect = {SCREEN_WIDTH/2 - pauseW/2, SCREEN_HEIGHT/2 - pauseH/2, pauseW, pauseH};
+        pauseBackgroundTexture = TextureManager::LoadTexture("assets/images/pauseBG.png");
+        pauseBackgroundRect = {SCREEN_WIDTH/4, SCREEN_HEIGHT/4, SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
 
         //Load HPTexture
         HPTexture = createTextTexture("HP", white);
@@ -173,6 +171,7 @@ void Game::handleEvents()
             if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
                 currentState = PAUSED;
+                player->stopMoving();
                 pauseStartTime = SDL_GetTicks();
                 Mix_PauseMusic();
             }
@@ -185,6 +184,7 @@ void Game::handleEvents()
             }
             break;
         case PAUSED:
+        {
             if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
                 currentState = PLAYING;
@@ -195,6 +195,7 @@ void Game::handleEvents()
             {
                 isRunning = false;
             }
+        }
             break;
         case GAME_OVER:
             {
@@ -379,7 +380,6 @@ void Game::update()
         //health
         currenHealth.w = 200*player->getHealth()/PLAYER_HEALTH;
     }
-
 }
 
 void Game::render()
@@ -414,14 +414,9 @@ void Game::render()
         SDL_RenderDrawRect(Renderer::renderer, &healthBackground);
 
         //render PAUSE TEXT
-        if(currentState == PAUSED && pauseTexture)
+        if(currentState == PAUSED && pauseBackgroundTexture)
         {
-            SDL_Rect optimizedRect = pauseRect;
-            optimizedRect.w = 5*optimizedRect.w;
-            optimizedRect.h = 5*optimizedRect.h;
-            optimizedRect.x = SCREEN_WIDTH/2 - optimizedRect.w/2;
-            optimizedRect.y = SCREEN_HEIGHT/2 - optimizedRect.h/2;
-            TextureManager::Draw(pauseTexture, {0, 0, pauseRect.w, pauseRect.h}, optimizedRect);
+            TextureManager::Draw(pauseBackgroundTexture, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, pauseBackgroundRect);
         }
 
         break;
@@ -466,7 +461,7 @@ void Game::clean()
     if(scoreFont) TTF_CloseFont(scoreFont);
     if(scoreTexture) SDL_DestroyTexture(scoreTexture);
     if(highscoreTexture) SDL_DestroyTexture(highscoreTexture);
-    if(pauseTexture) SDL_DestroyTexture(pauseTexture);
+    if(pauseBackgroundTexture) SDL_DestroyTexture(pauseBackgroundTexture);
     if(HPTexture) SDL_DestroyTexture(HPTexture);
     if(gameOverTexture) SDL_DestroyTexture(gameOverTexture);
     if(gameOverBackground) SDL_DestroyTexture(gameOverBackground);

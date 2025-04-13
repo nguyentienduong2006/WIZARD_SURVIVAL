@@ -23,6 +23,7 @@ public:
     int getHealth() const {return health; }
     void takeDamage(int damage);
     void checkBulletCollision(BulletManager& bulletManager);
+    void stopMoving();
 private:
     int health;
     int frame = 0;
@@ -33,6 +34,8 @@ private:
 
     bool isHit;
     Uint32 hitTime = 0;
+
+    Mix_Chunk* hurtSound = nullptr;
 };
 
 #endif // _PLAYER_H_

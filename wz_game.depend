@@ -4,7 +4,7 @@
 1744452028 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1744485490 f:\lap trinh\wizard_survival\game.h
+1744521660 f:\lap trinh\wizard_survival\game.h
 	"config.h"
 	<iostream>
 	<vector>
@@ -46,7 +46,7 @@
 
 1742769098 D
 
-1744485893 source:f:\lap trinh\wizard_survival\game.cpp
+1744522173 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -88,7 +88,7 @@
 1744021881 f:\lap trinh\wizard_survival\map.h
 	"config.h"
 
-1744485998 source:f:\lap trinh\wizard_survival\player.cpp
+1744522144 source:f:\lap trinh\wizard_survival\player.cpp
 	"Player.h"
 	"Collision.h"
 	"TextureManager.h"
@@ -99,7 +99,7 @@
 	"BulletManager.h"
 	<vector>
 
-1744485998 f:\lap trinh\wizard_survival\player.h
+1744522051 f:\lap trinh\wizard_survival\player.h
 	"GameObject.h"
 	"BulletManager.h"
 	"config.h"
@@ -129,7 +129,7 @@
 	"TextureManager.h"
 	"config.h"
 
-1744021881 source:f:\lap trinh\wizard_survival\orc.cpp
+1744518372 source:f:\lap trinh\wizard_survival\orc.cpp
 	"Orc.h"
 	"Collision.h"
 	"MapData.h"
@@ -139,12 +139,12 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744071445 source:f:\lap trinh\wizard_survival\enemy.cpp
+1744518372 source:f:\lap trinh\wizard_survival\enemy.cpp
 	"Enemy.h"
 	"camera.h"
 	"TextureManager.h"
 
-1744071445 f:\lap trinh\wizard_survival\enemy.h
+1744518372 f:\lap trinh\wizard_survival\enemy.h
 	"config.h"
 	"GameObject.h"
 
@@ -228,10 +228,10 @@
 	<vector>
 	"BulletManager.h"
 
-1744485470 f:\lap trinh\wizard_survival\mainmenu.h
+1744516832 f:\lap trinh\wizard_survival\mainmenu.h
 	"config.h"
 
-1744484970 source:f:\lap trinh\wizard_survival\mainmenu.cpp
+1744517098 source:f:\lap trinh\wizard_survival\mainmenu.cpp
 	"MainMenu.h"
 	"TextureManager.h"
 	"Game.h"
