@@ -1,4 +1,4 @@
-#include "Orc.h"
+#include "Mermaid.h"
 #include "Collision.h"
 #include "MapData.h"
 #include "Player.h"
@@ -7,11 +7,11 @@
 #include "TextureManager.h"
 #include "MapData.h"
 
-Orc::Orc(int x, int y) : Enemy("assets/images/mermaid.png", x, y, 50, 2, 10)
+Mermaid::Mermaid(int x, int y) : Enemy("assets/images/mermaid.png", x, y, 50, 2, 10)
 {
 }
 
-void Orc::Update()
+void Mermaid::Update()
 {
     extern Player* player;
     if(player)
@@ -78,12 +78,12 @@ void Orc::Update()
 }
 
 
-void Orc::Render()
+void Mermaid::Render()
 {
     Enemy::Render();
 }
 
-void Orc::Attack(Player* player)
+void Mermaid::Attack(Player* player)
 {
     Uint32 currenTime = SDL_GetTicks();
     if( currenTime - lastAttackTime >= ATTACK_COOLDOWN )

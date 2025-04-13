@@ -1,13 +1,13 @@
-#ifndef _ORC_H_
-#define _ORC_H_
+#ifndef _Mermaid_H_
+#define _Mermaid_H_
 
 #include "Enemy.h"
 #include "Player.h"
 
-class Orc : public Enemy
+class Mermaid : public Enemy
 {
 public:
-    Orc(int x, int y);
+    Mermaid(int x, int y);
 
     void Update() override;
     void Render() override;
@@ -24,4 +24,4 @@ private:
     EnemyDirection direction = E_DOWN;
 };
 
-#endif // _ORC_H_
+#endif // _Mermaid_H_

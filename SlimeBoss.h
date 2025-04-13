@@ -31,4 +31,4 @@ private:
     Uint32 lastExplosionTime = 0;
 };
 
-#endif // _ORC_H_
+#endif // _Mermaid_H_

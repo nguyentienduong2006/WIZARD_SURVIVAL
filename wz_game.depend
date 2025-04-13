@@ -46,7 +46,7 @@
 
 1742769098 D
 
-1744528606 source:f:\lap trinh\wizard_survival\game.cpp
+1744532965 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -54,7 +54,7 @@
 	"Player.h"
 	"algorithm"
 	"EnemyManager.h"
-	"Orc.h"
+	"Mermaid.h"
 	"BulletManager.h"
 	"Lion.h"
 	"Blaze.h"
@@ -184,7 +184,7 @@
 1744021881 f:\lap trinh\wizard_survival\mapdata.h
 	"config.h"
 
-1744022689 f:\lap trinh\wizard_survival\lion.h
+1744532965 f:\lap trinh\wizard_survival\lion.h
 	"Enemy.h"
 	"Player.h"
 
@@ -198,7 +198,7 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744024727 f:\lap trinh\wizard_survival\blaze.h
+1744532965 f:\lap trinh\wizard_survival\blaze.h
 	"Enemy.h"
 	"Player.h"
 
@@ -212,7 +212,7 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744460254 f:\lap trinh\wizard_survival\slimeboss.h
+1744532965 f:\lap trinh\wizard_survival\slimeboss.h
 	"Enemy.h"
 	"Player.h"
 
@@ -236,4 +236,18 @@
 	"TextureManager.h"
 	"Game.h"
 	<iostream>
+
+1744532965 f:\lap trinh\wizard_survival\mermaid.h
+	"Enemy.h"
+	"Player.h"
+
+1744532965 source:f:\lap trinh\wizard_survival\mermaid.cpp
+	"Mermaid.h"
+	"Collision.h"
+	"MapData.h"
+	"Player.h"
+	"cmath"
+	"camera.h"
+	"TextureManager.h"
+	"MapData.h"
 

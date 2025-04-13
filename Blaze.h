@@ -24,4 +24,4 @@ private:
     EnemyDirection direction = E_DOWN;
 };
 
-#endif // _ORC_H_
+#endif // _Mermaid_H_

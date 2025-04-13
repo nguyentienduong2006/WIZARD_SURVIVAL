@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "algorithm"
 #include "EnemyManager.h"
-#include "Orc.h"
+#include "Mermaid.h"
 #include "BulletManager.h"
 #include "Lion.h"
 #include "Blaze.h"
@@ -305,7 +305,7 @@ void Game::update()
                 switch(enemyType)
                 {
                 case 0:
-                    enemyManager.addEnemy(new Orc(spawnX, spawnY));
+                    enemyManager.addEnemy(new Mermaid(spawnX, spawnY));
                     break;
                 case 1:
                     enemyManager.addEnemy(new Lion(spawnX, spawnY));
