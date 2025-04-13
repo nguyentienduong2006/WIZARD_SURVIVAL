@@ -38,8 +38,7 @@ private:
     Uint32 gameStartTime = 0;
     Uint32 lastSpawnTime = 0;
     Uint32 spawnInterval = 5000;
-    static const Uint32 FIVE_MINUTE = 300000;
-    static const Uint32 ONE_MINUTE = 600000;
+    static const Uint32 ONE_MINUTE = 60000;
 
     //menu
     MainMenu mainMenu;
@@ -95,5 +94,9 @@ private:
 
     SDL_Color white = {255, 255, 255, 255};
     SDL_Color hoverColor = {255, 100, 100, 255};
+
+    Uint32 bossInterval = 18000;
+    Uint32 gameTime = 0;
+    Uint32 lastBossSpawnTime = 0;
 };
 #endif // _GAME_H_

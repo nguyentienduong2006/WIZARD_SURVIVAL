@@ -150,7 +150,7 @@ void MainMenu::handleEvent(bool& isRunning, bool& startGame, Mix_Chunk* buttonCl
             isSoundOn = !isSoundOn;
             if(isSoundOn)
             {
-                Mix_Volume(-1, MIX_MAX_VOLUME);
+                Mix_Volume(-1, MIX_MAX_VOLUME/2);
             }
             else
             {
@@ -163,7 +163,7 @@ void MainMenu::handleEvent(bool& isRunning, bool& startGame, Mix_Chunk* buttonCl
             isMusicOn = !isMusicOn;
             if(isMusicOn)
             {
-                Mix_VolumeMusic(MIX_MAX_VOLUME);
+                Mix_VolumeMusic(MIX_MAX_VOLUME/2);
             }
             else
             {

@@ -164,6 +164,7 @@ void Game::handleEvents()
                     lastSpawnTime = 0;
                     spawnInterval = 5000;
                     bgMusicStarted = false;
+                    lastBossSpawnTime = 0;
                 }
             }
             break;
@@ -250,6 +251,7 @@ void Game::handleEvents()
                         lastSpawnTime = 0;
                         spawnInterval = 5000;
                         bgMusicStarted = false;
+                        lastBossSpawnTime = 0;
 
                         currentState = PLAYING;
                     }
@@ -298,7 +300,7 @@ void Game::update()
                     spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
                 }
                 while(touchesWall(spawnX, spawnY, MapData::lv1));
-                    int enemyType = std::rand()%4;
+                    int enemyType = std::rand()%3;
 
                 switch(enemyType)
                 {
@@ -311,9 +313,6 @@ void Game::update()
                 case 2:
                     enemyManager.addEnemy(new Blaze(spawnX, spawnY));
                     break;
-                case 3:
-                    enemyManager.addEnemy(new SlimeBoss(spawnX, spawnY));//test
-                    break;//test
                 }
 
                 lastSpawnTime = currentTime;
@@ -323,11 +322,10 @@ void Game::update()
                     spawnInterval -= 100;
                 }
 
-                if(elapsedTIme >= FIVE_MINUTE && (currentTime - lastSpawnTime) % ONE_MINUTE == 0)
+                if(elapsedTIme >= 3*ONE_MINUTE && (currentTime - lastBossSpawnTime) >= 2*ONE_MINUTE)
                 {
-                    //int spawnX = std::rand()%(MAP_WIDTH - TILE_SIZE);
-                    //int spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
-                    //spawn BOSS
+                    enemyManager.addEnemy(new SlimeBoss(SCREEN_WIDTH/2 + 400, SCREEN_HEIGHT/2 + 400));
+                    lastBossSpawnTime = currentTime;
                 }
 
             }

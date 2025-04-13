@@ -71,6 +71,10 @@ void Orc::Update()
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 
+    if(isHit && SDL_GetTicks() - hitTime >= HIT_DURATION)
+    {
+        isHit = false;
+    }
 }
 
 

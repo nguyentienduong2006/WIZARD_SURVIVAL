@@ -12,7 +12,7 @@
 Player::Player(const char* textureSheet, int x, int y) : GameObject(textureSheet, x, y)
 {
     health = 100;
-    hurtSound = Mix_LoadWAV("assets/sounds/enemyDeath.wav");
+    hurtSound = Mix_LoadWAV("assets/sounds/playerHurt.wav");
 }
 void Player::Update()
 {

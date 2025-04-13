@@ -87,6 +87,11 @@ void SlimeBoss::Update()
         BulletExplosion();
         lastExplosionTime = currentTime;
     }
+
+    if(isHit && SDL_GetTicks() - hitTime >= HIT_DURATION)
+    {
+        isHit = false;
+    }
 }
 
 
