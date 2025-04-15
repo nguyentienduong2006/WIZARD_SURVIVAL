@@ -1,4 +1,4 @@
-
+Nguyễn Tiến Dương - 24021442
 1. Tự làm các class enemy, collision 
     Xem tutorial về phần sắp xếp file, các file cơ bản cần tạo
 2. Các nguồn tham khảo âm thanh, hình ảnh:
