@@ -16,16 +16,19 @@ public:
     int getY() const { return ypos; }
     SDL_Rect getDestRect() const { return destRect; }
 protected:
-    //obj position
+    SDL_Texture* objTexture;
+    SDL_Rect srcRect, destRect;
+
     int xpos;
     int ypos;
-    //obj velocity
+
     int xvel;
     int yvel;
-    //objTexture
-    SDL_Texture* objTexture;
-    //object source/destination Rect
-    SDL_Rect srcRect, destRect;
+
+    int frame = 0;
+    int frameCount = 3;
+    int frameDelay = 7;
+    int frameTimer = 0;
 };
 
 #endif

@@ -38,58 +38,56 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
     int flags = 0;
     if(fullscreen)
     {
-        flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+        flags = SDL_WINDOW_FULLSCREEN;
     }
 
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         std::cout<<"SDL initialized!"<<std::endl;
+
         window = SDL_CreateWindow(title, x, y, width, height, flags);
         if(window){
             std::cout<<"Created window!"<<std::endl;
-            //LoadIcon
+
             SDL_Surface* iconSurface = IMG_Load("assets/images/GameIcon.png");
             SDL_SetWindowIcon(window, iconSurface);
             SDL_FreeSurface(iconSurface);
         }
+
         Renderer::renderer = SDL_CreateRenderer(window, -1, 0);
         if(Renderer::renderer) {
             std::cout<<"Created renderer!"<<std::endl;
         }
 
-        //init TTF
         if(TTF_Init() != -1)
         {
             std::cout<<"TTF initialized!"<<std::endl;
         }
-        scoreFont = TTF_OpenFont("assets/fonts/gameFont.ttf", 24);
 
-        //init Mixer
         if( Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) >= 0)
         {
             std::cout<<"Mixer initialized!"<<std::endl;
+            Mix_Volume(-1, MIX_MAX_VOLUME/2);
         }
+
+        scoreFont = TTF_OpenFont("assets/fonts/gameFont.ttf", 24);
 
         backgroundMusic = Mix_LoadMUS("assets/sounds/bgMusic.mp3");
         shootSound = Mix_LoadWAV("assets/sounds/fireball.wav");
         buttonClickSound = Mix_LoadWAV("assets/sounds/buttonClick.wav");
         enemyDieSound = Mix_LoadWAV("assets/sounds/enemyDeath.wav");
 
-        //Pause
         pauseBackgroundTexture = TextureManager::LoadTexture("assets/images/pauseBG.png");
         pauseBackgroundRect = {SCREEN_WIDTH/4, SCREEN_HEIGHT/4, SCREEN_WIDTH/2, SCREEN_HEIGHT/2};
 
-        //Load HPTexture
         HPTexture = createTextTexture("HP", white);
         int HPW, HPH;
         SDL_QueryTexture(HPTexture, NULL, NULL, &HPW, &HPH);
         HPRect = {10, 10, HPW, HPH};
 
-        //Hp bar
         healthBackground = {10 + HPW + 10, 10, 200, HPH};
         currenHealth = {healthBackground.x, 10, 200, HPH};
 
-        //game over
         gameOverBackground = TextureManager::LoadTexture("assets/images/gameOverBackground.png");
 
         gameOverTexture = createTextTexture("GAME OVER", white);
@@ -107,7 +105,6 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         SDL_QueryTexture(replayTexture, NULL, NULL, &replayW, &replayH);
         replayRect = {SCREEN_WIDTH/2 - replayW/2, menuRect.y + menuRect.h + 30, replayW, replayH};
 
-        //load highs core from file
         std::ifstream inFile("highscore.txt");
         if(inFile)
         {
@@ -115,17 +112,15 @@ void Game::init(const char* title, int x, int y, int width, int height, bool ful
         }
         inFile.close();
 
-
         isRunning = true;
     }
+
     mainMenu.init();
 }
 
 void Game::handleEvents()
 {
     while(SDL_PollEvent(&Game::event)) {
-
-        //fullscreen
         if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F11)
             {
                 if(!isFullScreen)
@@ -140,13 +135,13 @@ void Game::handleEvents()
                 }
             }
 
-        //handle events
         switch(currentState)
         {
         case MENU:
             {
                 bool startGame = false;
                 mainMenu.handleEvent(isRunning, startGame, buttonClickSound);
+
                 if(startGame)
                 {
                     if(player) delete player;
@@ -169,6 +164,11 @@ void Game::handleEvents()
             }
             break;
         case PLAYING:
+            if(event.type == SDL_QUIT)
+            {
+                isRunning = false;
+            }
+
             if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
                 currentState = PAUSED;
@@ -176,40 +176,41 @@ void Game::handleEvents()
                 pauseStartTime = SDL_GetTicks();
                 Mix_PauseMusic();
             }
-            if(event.type == SDL_QUIT){
-                    isRunning = false;
-            }
+
             if(player)
             {
                 player->handleEvent(bulletManager, shootSound);
             }
+
             break;
         case PAUSED:
         {
+            if(event.type == SDL_QUIT)
+            {
+                isRunning = false;
+            }
+
             if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
             {
                 currentState = PLAYING;
                 totalPausedTime += (SDL_GetTicks() - pauseStartTime);
                 Mix_ResumeMusic();
             }
-            if(event.type == SDL_QUIT)
-            {
-                isRunning = false;
-            }
         }
             break;
         case GAME_OVER:
             {
                 Mix_HaltMusic();
+
                 if(event.type == SDL_QUIT)
                 {
                     isRunning = false;
                 }
-                //get mouse
+
                 int mouseX, mouseY;
                 SDL_GetMouseState(&mouseX, &mouseY);
                 SDL_Point mousePoint = {mouseX, mouseY};
-                //if hover
+
                 if(SDL_PointInRect(&mousePoint, &menuRect))
                 {
                     menuHovered = true;
@@ -218,6 +219,7 @@ void Game::handleEvents()
                 {
                     menuHovered = false;
                 }
+
                 if(SDL_PointInRect(&mousePoint, &replayRect))
                 {
                     replayHovered = true;
@@ -226,15 +228,15 @@ void Game::handleEvents()
                 {
                     replayHovered = false;
                 }
-                //click
+
                 if(event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
                 {
                     if(menuHovered)
                     {
                         if(buttonClickSound) Mix_PlayChannel(-1, buttonClickSound, 0);
-                        //isRunning = false;
                         currentState = MENU;
                     }
+
                     if(replayHovered)
                     {
                         if(player) delete player;
@@ -270,7 +272,6 @@ void Game::update()
             cnt++;
             std::cout<<"cnt: "<<cnt<<"         ";
             std::cout << "Camera: " << Camera::camera.x << ", " << Camera::camera.y << std::endl;
-            //spawn
 
             if(!bgMusicStarted && currentTime - gameStartTime >= bgMusicDelay)
             {
@@ -283,7 +284,6 @@ void Game::update()
 
             Uint32 elapsedTIme = currentTime - gameStartTime;
 
-            //score by time survive
             if(currentTime - lastScoreTime >= 100)
             {
                 score += (currentTime - lastScoreTime)/100;
@@ -300,8 +300,8 @@ void Game::update()
                     spawnY = std::rand()%(MAP_HEIGHT - TILE_SIZE);
                 }
                 while(touchesWall(spawnX, spawnY, MapData::lv1));
-                    int enemyType = std::rand()%3;
 
+                int enemyType = std::rand()%3;
                 switch(enemyType)
                 {
                 case 0:
@@ -319,12 +319,12 @@ void Game::update()
 
                 if(spawnInterval > 1000)
                 {
-                    spawnInterval -= 100;
+                    spawnInterval -= 50;
                 }
 
-                if(elapsedTIme >= 3*ONE_MINUTE && (currentTime - lastBossSpawnTime) >= 2*ONE_MINUTE)
+                if(elapsedTIme >= ONE_MINUTE && (currentTime - lastBossSpawnTime) >= ONE_MINUTE)
                 {
-                    enemyManager.addEnemy(new SlimeBoss(SCREEN_WIDTH/2 + 400, SCREEN_HEIGHT/2 + 400));
+                    enemyManager.addEnemy(new SlimeBoss(SCREEN_WIDTH/2 , SCREEN_HEIGHT/2));
                     lastBossSpawnTime = currentTime;
                 }
 
@@ -334,7 +334,6 @@ void Game::update()
             enemyManager.updateEnemies();
             bulletManager.updateBullets();
 
-            //score by killing enemy
             int enemiesKilled = enemyManager.checkBulletCollisions(bulletManager);
             if(enemiesKilled >0)
             {
@@ -359,7 +358,6 @@ void Game::update()
                 currentState = GAME_OVER;
             }
 
-        //score Texture
         std::string scoreText = "Score " + std::to_string(score);
         SDL_DestroyTexture(scoreTexture);
         scoreTexture = createTextTexture(scoreText.c_str(), white);
@@ -367,7 +365,6 @@ void Game::update()
         SDL_QueryTexture(scoreTexture, NULL, NULL, &scoreW, &scoreH);
         scoreRect = {SCREEN_WIDTH - scoreW - 10, 10, scoreW, scoreH};
 
-        //high score Texture
         std::string highscoreText = "Highscore " + std::to_string(highscore);
         SDL_DestroyTexture(highscoreTexture);
         highscoreTexture = createTextTexture(highscoreText.c_str(), white);
@@ -375,7 +372,6 @@ void Game::update()
         SDL_QueryTexture(highscoreTexture, NULL, NULL, &hsW, &hsH);
         highscoreRect = {SCREEN_WIDTH/2 - hsW/2, 10, hsW, hsH};
 
-        //health
         currenHealth.w = 200*player->getHealth()/PLAYER_HEALTH;
     }
 }
@@ -396,13 +392,9 @@ void Game::render()
         enemyManager.renderEnemies();
         bulletManager.renderBullets();
 
-        //render score
         TextureManager::Draw(scoreTexture, {0, 0, scoreRect.w, scoreRect.h}, scoreRect);
-
-        //render high score
         TextureManager::Draw(highscoreTexture, {0, 0, highscoreRect.w, highscoreRect.h}, highscoreRect);
 
-        //render HP
         TextureManager::Draw(HPTexture, {0, 0, HPRect.w, HPRect.h}, HPRect);
         SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(Renderer::renderer, &healthBackground);
@@ -411,32 +403,30 @@ void Game::render()
         SDL_SetRenderDrawColor(Renderer::renderer, 255, 255, 255, 255);
         SDL_RenderDrawRect(Renderer::renderer, &healthBackground);
 
-        //render PAUSE TEXT
         if(currentState == PAUSED && pauseBackgroundTexture)
         {
             TextureManager::Draw(pauseBackgroundTexture, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, pauseBackgroundRect);
         }
-
         break;
+
     case GAME_OVER:
-        SDL_RenderClear(Renderer::renderer);
         TextureManager::Draw(gameOverBackground, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
         TextureManager::Draw(gameOverTexture, {0, 0, gameOverRect.w, gameOverRect.h}, gameOverRect);
+
         SDL_Color menuColor = menuHovered?hoverColor:white;
         SDL_DestroyTexture(menuTexture);
         menuTexture = createTextTexture("MENU", menuColor);
         TextureManager::Draw(menuTexture, {0, 0, menuRect.w, menuRect.h}, menuRect);
+
         SDL_Color replayColor = replayHovered?hoverColor:white;
         SDL_DestroyTexture(replayTexture);
         replayTexture = createTextTexture("REPLAY", replayColor);
         TextureManager::Draw(replayTexture, {0, 0, replayRect.w, replayRect.h}, replayRect);
 
-        //render score
         TextureManager::Draw(scoreTexture, {0, 0, scoreRect.w, scoreRect.h}, scoreRect);
-
-        //render high score
         TextureManager::Draw(highscoreTexture, {0, 0, highscoreRect.w, highscoreRect.h}, highscoreRect);
         break;
+
     }
     SDL_RenderPresent(Renderer::renderer);
 }
@@ -448,12 +438,14 @@ void Game::clean()
         delete player;
         player = nullptr;
     }
-    enemyManager.clearEnemies();
+
     if(map)
     {
         delete map;
         map = nullptr;
     }
+
+    enemyManager.clearEnemies();
     bulletManager.clearBullets();
 
     if(scoreFont) TTF_CloseFont(scoreFont);
@@ -494,7 +486,6 @@ void Game::addScore(int points)
 
 SDL_Texture* Game::createTextTexture(const char* text, SDL_Color color)
 {
-    if(!scoreFont || !Renderer::renderer) return nullptr;
     SDL_Surface* tempSurface = TTF_RenderText_Solid(scoreFont, text, color);
     SDL_Texture* newTexture = SDL_CreateTextureFromSurface(Renderer::renderer, tempSurface);
     SDL_FreeSurface(tempSurface);

@@ -12,16 +12,17 @@ public:
     void Update() override;
     void Render() override;
     void Attack(Player* player) override;
+    void shootBullet(int dx, int dy, int distance);
 
 private:
-    static const int DETECTION_RANGE = TILE_SIZE*6;
+    Direction direction = E_DOWN;
+
+    static const int DETECTION_RANGE = TILE_SIZE*10;
     static const int ATTACK_RANGE = TILE_SIZE;
-    //animation
-    int frame = 0;
-    int frameCount = 3;
-    int frameDelay = 7;
-    int frameTimer = 0;
-    EnemyDirection direction = E_DOWN;
+    static const int LONG_ATTACK_RANGE = 8*TILE_SIZE;
+
+    const Uint32 BULLET_INTERVAL = 2000;
+    Uint32 lastBulletTime = 0;
 };
 
-#endif // _Mermaid_H_
+#endif // _MERMAID_H_

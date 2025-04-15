@@ -21,15 +21,16 @@ public:
     bool isDead() const {return health <= 0; }
 
 protected:
+    static const int HIT_DURATION = 200;
     int health;
     int speed;
     int damage;
-    Uint32 lastAttackTime = 0;
-    static const Uint32 ATTACK_COOLDOWN = 1000;
 
     bool isHit = false;
+
+    static const Uint32 ATTACK_COOLDOWN = 1000;
+    Uint32 lastAttackTime = 0;
     Uint32 hitTime = 0;
-    static const int HIT_DURATION = 200;
 };
 
 #endif // _ENEMY_H_

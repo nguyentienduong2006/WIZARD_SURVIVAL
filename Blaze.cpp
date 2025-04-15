@@ -14,11 +14,13 @@ Blaze::Blaze(int x, int y) : Enemy("assets/images/blaze.png", x, y, 30, 3, 5)
 void Blaze::Update()
 {
     extern Player* player;
+
     if(player)
     {
         int dx = player->getX() - xpos;
         int dy = player->getY() - ypos;
         float distance = sqrt(dx*dx + dy*dy);
+
         if(distance < DETECTION_RANGE)
         {
             if(distance > 0)
@@ -36,6 +38,7 @@ void Blaze::Update()
             xvel = 0;
             yvel = 0;
         }
+
         if(xvel > 0) direction = E_RIGHT;
         if(xvel < 0) direction = E_LEFT;
         if(yvel > 0) direction = E_DOWN;
@@ -43,7 +46,7 @@ void Blaze::Update()
     }
     xpos += xvel;
     ypos += yvel;
-    //xuyen tuong
+
     if(xpos < 0 || xpos + TILE_SIZE > MAP_WIDTH)
     {
         xpos -= xvel;
@@ -52,10 +55,10 @@ void Blaze::Update()
     {
         ypos -= yvel;
     }
+
     destRect.x = xpos;
     destRect.y = ypos;
 
-    //animation
     if( xvel != 0 || yvel != 0)
     {
         frameTimer++;
@@ -69,6 +72,7 @@ void Blaze::Update()
     {
         frame = 0;
     }
+
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 
@@ -87,6 +91,7 @@ void Blaze::Render()
 void Blaze::Attack(Player* player)
 {
     Uint32 currenTime = SDL_GetTicks();
+
     if( currenTime - lastAttackTime >= ATTACK_COOLDOWN )
     {
         SDL_Rect playeRect = player->getDestRect();

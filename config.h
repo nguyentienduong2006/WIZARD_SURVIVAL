@@ -13,7 +13,6 @@ const int TILE_SIZE = 64;
 
 const int MAP_WIDTH = 1920;
 const int MAP_HEIGHT = 1600;
-
 const int MAP_TILE_WIDTH = 30;
 const int MAP_TILE_HEIGHT = 25;
 
@@ -21,7 +20,7 @@ const int BULLET_VEL = 10;
 
 const int PLAYER_HEALTH = 100;
 
-enum EnemyDirection
+enum Direction
 {
     E_UP,
     E_RIGHT,

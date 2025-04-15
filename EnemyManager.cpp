@@ -10,6 +10,7 @@ void EnemyManager::updateEnemies()
     for( auto it = enemies.begin(); it != enemies.end(); )
     {
         (*it)->Update();
+
         if((*it)->getHealth() <= 0)
         {
             delete *it;
@@ -26,13 +27,13 @@ void EnemyManager::renderEnemies()
 {
     for( auto enemy : enemies )
     {
-        enemy -> Render();
+        enemy->Render();
     }
 }
 
 void EnemyManager::clearEnemies()
 {
-    for( auto enemy : enemies )
+    for(auto enemy : enemies)
     {
         delete enemy;
     }
@@ -42,14 +43,18 @@ void EnemyManager::clearEnemies()
 int EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
 {
     int killed = 0;
+
     auto& bullets = bulletManager.getBullets();
+
     for(auto enemyIt = enemies.begin(); enemyIt != enemies.end(); )
     {
         bool enemyHit = false;
+
         for( auto bulletIt = bullets.begin(); bulletIt != bullets.end(); )
         {
             bool isEnemyBullet;
             isEnemyBullet = (*bulletIt)->isEnemyBullet();
+
             if(!isEnemyBullet)
             {
                 if(*bulletIt == nullptr)
@@ -57,6 +62,7 @@ int EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
                     bulletIt = bullets.erase(bulletIt);
                     continue;
                 }
+
                 SDL_Rect enemyRect = (*enemyIt)->getDestRect();
                 SDL_Rect bulletRect = (*bulletIt)->getDestRect();
                 if(SDL_HasIntersection(&enemyRect, &bulletRect))
@@ -73,6 +79,7 @@ int EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
             }
             else ++bulletIt;
         }
+
         if(enemyHit && (*enemyIt)->getHealth() <= 0)
         {
             delete *enemyIt;
@@ -82,5 +89,6 @@ int EnemyManager::checkBulletCollisions(BulletManager& bulletManager)
         else
         ++enemyIt;
     }
+
     return killed;
 }

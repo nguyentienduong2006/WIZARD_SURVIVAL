@@ -46,7 +46,7 @@ bool touchesWall(int newX, int newY, int lv1[MAP_TILE_HEIGHT][MAP_TILE_WIDTH])
             {
                 SDL_Rect tileBox = { j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE };
 
-                SDL_Rect playerBox = { newX+1, newY+1, TILE_SIZE-3, TILE_SIZE-3 };
+                SDL_Rect playerBox = { newX+1, newY+1, TILE_SIZE-2, TILE_SIZE-2 };
                 if (checkCollision(playerBox, tileBox))
                 {
                     return true;

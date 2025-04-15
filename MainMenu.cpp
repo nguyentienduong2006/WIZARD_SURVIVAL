@@ -5,16 +5,16 @@
 
 MainMenu::MainMenu()
 {
-    gFont = NULL;
-    backgroundTexture = NULL;
-    startTexture = NULL;
-    exitTexture = NULL;
-    soundOnTexture = NULL;
-    soundOffTexture = NULL;
-    musicOnTexture = NULL;
-    musicOffTexture = NULL;
-    helpBackground = NULL;
-    quitTexture = NULL;
+    gFont = nullptr;
+    backgroundTexture = nullptr;
+    startTexture = nullptr;
+    exitTexture = nullptr;
+    soundOnTexture = nullptr;
+    soundOffTexture = nullptr;
+    musicOnTexture = nullptr;
+    musicOffTexture = nullptr;
+    helpBackground = nullptr;
+    quitTexture = nullptr;
     helpButtonTexture = nullptr;
 
     startHovered = false;
@@ -29,6 +29,7 @@ MainMenu::MainMenu()
 MainMenu::~MainMenu()
 {
     if(gFont) TTF_CloseFont(gFont);
+
     if(backgroundTexture) SDL_DestroyTexture(backgroundTexture);
     if(startTexture) SDL_DestroyTexture(startTexture);
     if(exitTexture) SDL_DestroyTexture(exitTexture);
@@ -47,42 +48,34 @@ void MainMenu::init()
     {
         std::cout<<"Failed to init SDL_ttf"<<std::endl;
     }
-    //Load font
     gFont = TTF_OpenFont("assets/fonts/gameFont.ttf", 54);
-    if(!gFont) std::cout<<"Failed to load Font"<<std::endl;
+    if(gFont) std::cout<<"Menu font loaded!"<<std::endl;
 
-    //Load background
     backgroundTexture = TextureManager::LoadTexture("assets/images/mainmenu.png");
 
-    //create startTexture
     startTexture = createTextTexture("START", white);
     int startW, startH;
     SDL_QueryTexture(startTexture, NULL, NULL, &startW, &startH);
     startRect = {SCREEN_WIDTH/2- startW/2, SCREEN_HEIGHT/2 , startW, startH};
 
-    //help button
     helpButtonTexture = createTextTexture("HELP", white);
     int helpW, helpH;
     SDL_QueryTexture(helpButtonTexture, nullptr, nullptr, &helpW, &helpH);
     helpButtonRect = {SCREEN_WIDTH/2 - helpW/2, SCREEN_HEIGHT/2 + 100, helpW, helpH};
 
-    //create exitTexture
     exitTexture = createTextTexture("EXIT", white);
     int exitW, exitH;
     SDL_QueryTexture(exitTexture, NULL, NULL, &exitW, &exitH);
     exitRect = {SCREEN_WIDTH/2 - exitW/2, SCREEN_HEIGHT/2 + 200, exitW, exitH};
 
-    //soundButton
     soundOnTexture = TextureManager::LoadTexture("assets/images/soundOn.png");
     soundOffTexture = TextureManager::LoadTexture("assets/images/soundOff.png");
     soundRect = {10, 10, TILE_SIZE, TILE_SIZE};
 
-    //musicButton
     musicOnTexture = TextureManager::LoadTexture("assets/images/musicOn.png");
     musicOffTexture = TextureManager::LoadTexture("assets/images/musicOff.png");
     musicRect = {10, 10 + TILE_SIZE + 10, TILE_SIZE, TILE_SIZE};
 
-    //help
     helpBackground = TextureManager::LoadTexture("assets/images/help.png");
     quitTexture = TextureManager::LoadTexture("assets/images/quit.png");
     int quitW, quitH;
@@ -93,7 +86,6 @@ void MainMenu::init()
 
 SDL_Texture* MainMenu::createTextTexture(const char* text, SDL_Color color)
 {
-    if(!gFont || !Renderer::renderer) return nullptr;
     SDL_Surface* tempSurface = TTF_RenderText_Solid(gFont, text, color);
     SDL_Texture* newTexture = SDL_CreateTextureFromSurface(Renderer::renderer, tempSurface);
     SDL_FreeSurface(tempSurface);
@@ -107,7 +99,6 @@ void MainMenu::handleEvent(bool& isRunning, bool& startGame, Mix_Chunk* buttonCl
     {
         isRunning = false;
         startGame = false;
-        return;
     }
 
     int mouseX, mouseY;
@@ -175,38 +166,34 @@ void MainMenu::handleEvent(bool& isRunning, bool& startGame, Mix_Chunk* buttonCl
 
 void MainMenu::render()
 {
-    //render bg
     SDL_Rect bgRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
     TextureManager::Draw(backgroundTexture, bgRect, bgRect);
 
-    //render start
     SDL_Color startColor = startHovered?hoverColor:white;
     SDL_DestroyTexture(startTexture);
     startTexture = createTextTexture("START", startColor);
     if(startTexture) TextureManager::Draw(startTexture, {0, 0, startRect.w, startRect.h}, startRect);
-
-    //render exit
-    SDL_Color exitColor = exitHovered?hoverColor:white;
-    SDL_DestroyTexture(exitTexture);
-    exitTexture = createTextTexture("Exit", exitColor);
-    if(exitTexture) TextureManager::Draw(exitTexture, {0, 0, exitRect.w, exitRect.h}, exitRect);
-
-    //render volumeButton
-    SDL_Texture* currenSoundTexture = isSoundOn?soundOnTexture:soundOffTexture;
-    if(currenSoundTexture) TextureManager::Draw(currenSoundTexture, {0, 0, TILE_SIZE, TILE_SIZE}, soundRect);
-
-    //render musicButton
-    SDL_Texture* currentMusicTexture = isMusicOn?musicOnTexture:musicOffTexture;
-    if(currentMusicTexture) TextureManager::Draw(currentMusicTexture, {0, 0, TILE_SIZE, TILE_SIZE}, musicRect);
 
     SDL_Color helpColor = helpHovered?hoverColor:white;
     SDL_DestroyTexture(helpButtonTexture);
     helpButtonTexture = createTextTexture("HELP", helpColor);
     if(helpButtonTexture) TextureManager::Draw(helpButtonTexture, {0, 0, helpButtonRect.w, helpButtonRect.h}, helpButtonRect);
 
+    SDL_Color exitColor = exitHovered?hoverColor:white;
+    SDL_DestroyTexture(exitTexture);
+    exitTexture = createTextTexture("Exit", exitColor);
+    if(exitTexture) TextureManager::Draw(exitTexture, {0, 0, exitRect.w, exitRect.h}, exitRect);
+
+    SDL_Texture* currenSoundTexture = isSoundOn?soundOnTexture:soundOffTexture;
+    if(currenSoundTexture) TextureManager::Draw(currenSoundTexture, {0, 0, TILE_SIZE, TILE_SIZE}, soundRect);
+
+    SDL_Texture* currentMusicTexture = isMusicOn?musicOnTexture:musicOffTexture;
+    if(currentMusicTexture) TextureManager::Draw(currentMusicTexture, {0, 0, TILE_SIZE, TILE_SIZE}, musicRect);
+
     if(needHelp)
     {
         TextureManager::Draw(helpBackground, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}, {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT});
+
         if(quitHovered)
         {
             SDL_SetTextureColorMod(quitTexture, 255, 100, 100);
@@ -215,6 +202,7 @@ void MainMenu::render()
         {
             SDL_SetTextureColorMod(quitTexture, 255, 255, 255);
         }
+
         TextureManager::Draw(quitTexture, {0, 0, quitRect.w, quitRect.h}, quitRect);
     }
 

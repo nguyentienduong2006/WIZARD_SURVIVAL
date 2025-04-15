@@ -23,80 +23,71 @@ public:
     void render();
     void clean();
 
+    void spawnEnemy(int x, int y);
+    void addScore(int points);
+
     bool running();
 
     static SDL_Event event;
     static std::vector<Bullet> bullets;
-    void spawnEnemy(int x, int y);
-
-    void addScore(int points);
 private:
-    bool isRunning;
-    bool isFullScreen = false;
-    int cnt = 0;
     SDL_Window* window;
-    Uint32 gameStartTime = 0;
-    Uint32 lastSpawnTime = 0;
-    Uint32 spawnInterval = 5000;
-    static const Uint32 ONE_MINUTE = 60000;
 
-    //menu
     MainMenu mainMenu;
 
-    //score system
-    int score = 0;
-    Uint32 lastScoreTime = 0;
+    GameState currentState;
+
     TTF_Font* scoreFont = NULL;
+
+    SDL_Texture* gameOverBackground = nullptr;
     SDL_Texture* scoreTexture = NULL;
-    SDL_Rect scoreRect;
-
     SDL_Texture* createTextTexture(const char* text, SDL_Color color);
+    SDL_Texture* pauseBackgroundTexture;
+    SDL_Texture* HPTexture = nullptr;
+    SDL_Texture* highscoreTexture = nullptr;
+    SDL_Texture* gameOverTexture = nullptr;
+    SDL_Texture* menuTexture = nullptr;
+    SDL_Texture* replayTexture = nullptr;
 
-    //sound
+    SDL_Rect scoreRect;
+    SDL_Rect pauseBackgroundRect;
+    SDL_Rect HPRect;
+    SDL_Rect currenHealth;
+    SDL_Rect healthBackground;
+    SDL_Rect highscoreRect;
+    SDL_Rect gameOverRect;
+    SDL_Rect menuRect;
+    SDL_Rect replayRect;
+
     Mix_Music* backgroundMusic = nullptr;
     Mix_Chunk* shootSound = nullptr;
     Mix_Chunk* enemyDieSound = nullptr;
     Mix_Chunk* buttonClickSound = nullptr;
+
+    bool isRunning;
+    bool isFullScreen = false;
     bool bgMusicStarted = false;
-    Uint32 bgMusicDelay = 3000;
-
-    //pause
-    SDL_Texture* pauseBackgroundTexture;
-    SDL_Rect pauseBackgroundRect;
-    Uint32 pauseStartTime = 0;
-    Uint32 totalPausedTime = 0;
-
-    //HP text texture
-    SDL_Texture* HPTexture = nullptr;
-    SDL_Rect HPRect;
-    //HP bar
-    SDL_Rect currenHealth;
-    SDL_Rect healthBackground;
-
-    //high score
-    int highscore;
-    SDL_Texture* highscoreTexture = nullptr;
-    SDL_Rect highscoreRect;
-
-    //Game State
-    GameState currentState;
-
-    //game over
-    SDL_Texture* gameOverBackground = nullptr;
-    SDL_Texture* gameOverTexture = nullptr;
-    SDL_Rect gameOverRect;
-    SDL_Texture* menuTexture = nullptr;
-    SDL_Rect menuRect;
-    SDL_Texture* replayTexture = nullptr;
-    SDL_Rect replayRect;
     bool menuHovered = false;
     bool replayHovered = false;
+
+    int cnt = 0;
+    int score = 0;
+    int highscore;
+
+    static const Uint32 ONE_MINUTE = 60000;
+    Uint32 gameStartTime = 0;
+    Uint32 lastSpawnTime = 0;
+    Uint32 spawnInterval = 5000;
+    Uint32 lastScoreTime = 0;
+    Uint32 bgMusicDelay = 3000;
+    Uint32 pauseStartTime = 0;
+    Uint32 totalPausedTime = 0;
+    Uint32 bossInterval = 18000;
+    Uint32 gameTime = 0;
+    Uint32 lastBossSpawnTime = 0;
 
     SDL_Color white = {255, 255, 255, 255};
     SDL_Color hoverColor = {255, 100, 100, 255};
 
-    Uint32 bossInterval = 18000;
-    Uint32 gameTime = 0;
-    Uint32 lastBossSpawnTime = 0;
 };
 #endif // _GAME_H_

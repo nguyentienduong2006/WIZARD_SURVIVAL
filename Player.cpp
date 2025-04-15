@@ -28,10 +28,9 @@ void Player::Update()
         ypos -= yvel;
     }
 
-
     destRect.x = xpos;
     destRect.y = ypos;
-    //ANIMATION
+
     if( xvel != 0 || yvel != 0 )
     {
         frameTimer++;
@@ -49,7 +48,6 @@ void Player::Update()
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 
-    //Camera update
     Camera::camera.x = xpos + (TILE_SIZE/2) - (SCREEN_WIDTH / 2);
     Camera::camera.y = ypos + (TILE_SIZE/2) - (SCREEN_HEIGHT / 2);
 
@@ -74,7 +72,9 @@ void Player::Render()
     {
         SDL_SetTextureColorMod(objTexture, 255, 255, 255);
     }
+
     SDL_Rect renderPos = { destRect.x - Camera::camera.x, destRect.y - Camera::camera.y, destRect.w, destRect.h};
+
     TextureManager::Draw(objTexture, srcRect, renderPos);
 }
 
@@ -168,6 +168,7 @@ void Player::checkBulletCollision(BulletManager& bulletManager)
                 bulletIt = bullets.erase(bulletIt);
                 continue;
             }
+
             SDL_Rect bulletRect = (*bulletIt)->getDestRect();
             SDL_Rect playerRect = getDestRect();
             if(SDL_HasIntersection(&bulletRect, &playerRect))

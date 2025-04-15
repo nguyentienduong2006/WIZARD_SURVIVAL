@@ -1,3 +1,4 @@
+#ifndef _MAP_H_
 #include "config.h"
 
 class Map
@@ -9,9 +10,6 @@ public:
     void LoadMap(int arr[MAP_TILE_HEIGHT][MAP_TILE_WIDTH]);
     void DrawMap();
 private:
-
-    SDL_Rect src, dest;
-
     SDL_Texture* ground;
     SDL_Texture* grass;
     SDL_Texture* flower;
@@ -26,6 +24,9 @@ private:
     SDL_Texture* bush1;
     SDL_Texture* bush2;
 
+    SDL_Rect src, dest;
 
     int map[MAP_TILE_HEIGHT][MAP_TILE_WIDTH];
 };
+
+#endif // _MAP_H_

@@ -16,12 +16,8 @@ public:
 private:
     static const int DETECTION_RANGE = TILE_SIZE*8;
     static const int ATTACK_RANGE = TILE_SIZE;
-    //animation
-    int frame = 0;
-    int frameCount = 3;
-    int frameDelay = 7;
-    int frameTimer = 0;
-    EnemyDirection direction = E_DOWN;
+
+    Direction direction = E_DOWN;
 };
 
-#endif // _Mermaid_H_
+#endif // _BLAZE_H_

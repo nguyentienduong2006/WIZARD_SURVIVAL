@@ -9,7 +9,7 @@
 #include <vector>
 #include "BulletManager.h"
 
-SlimeBoss::SlimeBoss(int x, int y) : Enemy("assets/images/slime.png", x, y, 200, 2, 20)
+SlimeBoss::SlimeBoss(int x, int y) : Enemy("assets/images/slime.png", x, y, 300, 2, 20)
 {
     destRect = {x, y, 2*TILE_SIZE, 2*TILE_SIZE};
 }
@@ -17,6 +17,7 @@ SlimeBoss::SlimeBoss(int x, int y) : Enemy("assets/images/slime.png", x, y, 200,
 void SlimeBoss::Update()
 {
     extern Player* player;
+
     Uint32 currentTime = SDL_GetTicks();
 
     if(player)
@@ -24,6 +25,7 @@ void SlimeBoss::Update()
         int dx = player->getX() - xpos;
         int dy = player->getY() - ypos;
         float distance = sqrt(dx*dx + dy*dy);
+
         if(distance < DETECTION_RANGE)
         {
             if(distance > 0)
@@ -41,13 +43,16 @@ void SlimeBoss::Update()
             xvel = 0;
             yvel = 0;
         }
+
         if(xvel > 0) direction = B_RIGHT;
         if(xvel < 0) direction = B_LEFT;
         if(yvel > 0) direction = B_DOWN;
         if(yvel < 0) direction = B_UP;
     }
+
     xpos += xvel;
     ypos += yvel;
+
     if(xpos < 0 || xpos + TILE_SIZE > MAP_WIDTH || touchesWall(xpos, ypos, MapData::lv1))
     {
         xpos -= xvel;
@@ -56,10 +61,10 @@ void SlimeBoss::Update()
     {
         ypos -= yvel;
     }
+
     destRect.x = xpos;
     destRect.y = ypos;
 
-    //animation
     if( xvel != 0 || yvel != 0)
     {
         frameTimer++;
@@ -73,6 +78,7 @@ void SlimeBoss::Update()
     {
         frame = 0;
     }
+
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 
@@ -103,6 +109,7 @@ void SlimeBoss::Render()
 void SlimeBoss::Attack(Player* player)
 {
     Uint32 currentTime = SDL_GetTicks();
+
     if( currentTime - lastAttackTime >= ATTACK_COOLDOWN )
     {
         SDL_Rect playeRect = player->getDestRect();
@@ -118,9 +125,11 @@ void SlimeBoss::Attack(Player* player)
 void SlimeBoss::ShootBulletHell()
 {
     extern BulletManager bulletManager;
-    for(int i = 0; i < 12; ++i)
+    const int bulletCount = 8;
+
+    for(int i = 0; i < bulletCount; ++i)
     {
-        float angle = i*30*M_PI/180;
+        float angle = i*2*M_PI/bulletCount;
         float vx = cos(angle)*(BULLET_VEL/2);
         float vy = sin(angle)*(BULLET_VEL/2);
         bulletManager.addBullet(xpos + TILE_SIZE, ypos + TILE_SIZE, vx, vy, "assets/images/darkball.png", true);
@@ -130,9 +139,11 @@ void SlimeBoss::ShootBulletHell()
 void SlimeBoss::BulletExplosion()
 {
     extern BulletManager bulletManager;
-    for(int i = 0; i < 36; ++i)
+    const int bulletCount = 24;
+
+    for(int i = 0; i < bulletCount; ++i)
     {
-        float angle = i*10*M_PI/180;
+        float angle = i*2*M_PI/bulletCount;
         float vx = cos(angle)*(BULLET_VEL/2);
         float vy = sin(angle)*(BULLET_VEL/2);
         bulletManager.addBullet(xpos + TILE_SIZE, ypos + TILE_SIZE, vx, vy, "assets/images/darkball.png", true);

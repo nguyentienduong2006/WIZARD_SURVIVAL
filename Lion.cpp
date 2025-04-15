@@ -14,11 +14,13 @@ Lion::Lion(int x, int y) : Enemy("assets/images/lion.png", x, y, 20, 4, 8)
 void Lion::Update()
 {
     extern Player* player;
+
     if(player)
     {
         int dx = player->getX() - xpos;
         int dy = player->getY() - ypos;
         float distance = sqrt(dx*dx + dy*dy);
+
         if(distance < DETECTION_RANGE)
         {
             if(distance > 0)
@@ -36,13 +38,16 @@ void Lion::Update()
             xvel = 0;
             yvel = 0;
         }
+
         if(xvel > 0) direction = E_RIGHT;
         if(xvel < 0) direction = E_LEFT;
         if(yvel > 0) direction = E_DOWN;
         if(yvel < 0) direction = E_UP;
     }
+
     xpos += xvel;
     ypos += yvel;
+
     if(xpos < 0 || xpos + TILE_SIZE > MAP_WIDTH || touchesWall(xpos, ypos, MapData::lv1))
     {
         xpos -= xvel;
@@ -51,10 +56,10 @@ void Lion::Update()
     {
         ypos -= yvel;
     }
+
     destRect.x = xpos;
     destRect.y = ypos;
 
-    //animation
     if( xvel != 0 || yvel != 0)
     {
         frameTimer++;
@@ -68,6 +73,7 @@ void Lion::Update()
     {
         frame = 0;
     }
+
     srcRect.x = frame*TILE_SIZE;
     srcRect.y = direction*TILE_SIZE;
 

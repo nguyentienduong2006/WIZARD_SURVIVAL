@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
 140728031565466 <<<<<<< HEAD
 
-1744452028 source:f:\lap trinh\wizard_survival\main.cpp
+1744626406 source:f:\lap trinh\wizard_survival\main.cpp
 	"Game.h"
 
-1744525780 f:\lap trinh\wizard_survival\game.h
+1744624119 f:\lap trinh\wizard_survival\game.h
 	"config.h"
 	<iostream>
 	<vector>
@@ -46,7 +46,7 @@
 
 1742769098 D
 
-1744532965 source:f:\lap trinh\wizard_survival\game.cpp
+1744690357 source:f:\lap trinh\wizard_survival\game.cpp
 	"Game.h"
 	"TextureManager.h"
 	"GameObject.h"
@@ -67,7 +67,7 @@
 1744450755 source:f:\lap trinh\wizard_survival\texturemanager.cpp
 	"TextureManager.h"
 
-1744047487 f:\lap trinh\wizard_survival\texturemanager.h
+1744624524 f:\lap trinh\wizard_survival\texturemanager.h
 	"config.h"
 	"camera.h"
 	"renderer.h"
@@ -82,13 +82,13 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744066305 f:\lap trinh\wizard_survival\gameobject.h
+1744624359 f:\lap trinh\wizard_survival\gameobject.h
 	"config.h"
 
-1744021881 f:\lap trinh\wizard_survival\map.h
+1744624852 f:\lap trinh\wizard_survival\map.h
 	"config.h"
 
-1744530964 source:f:\lap trinh\wizard_survival\player.cpp
+1744626413 source:f:\lap trinh\wizard_survival\player.cpp
 	"Player.h"
 	"Collision.h"
 	"TextureManager.h"
@@ -99,12 +99,12 @@
 	"BulletManager.h"
 	<vector>
 
-1744522051 f:\lap trinh\wizard_survival\player.h
+1744624922 f:\lap trinh\wizard_survival\player.h
 	"GameObject.h"
 	"BulletManager.h"
 	"config.h"
 
-1742769659 source:f:\lap trinh\wizard_survival\collision.cpp
+1744626406 source:f:\lap trinh\wizard_survival\collision.cpp
 	"Collision.h"
 
 1742769098 f:\lap trinh\wizard_survival\collision.h
@@ -139,16 +139,16 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744528484 source:f:\lap trinh\wizard_survival\enemy.cpp
+1744626406 source:f:\lap trinh\wizard_survival\enemy.cpp
 	"Enemy.h"
 	"camera.h"
 	"TextureManager.h"
 
-1744528354 f:\lap trinh\wizard_survival\enemy.h
+1744624922 f:\lap trinh\wizard_survival\enemy.h
 	"config.h"
 	"GameObject.h"
 
-1744458479 source:f:\lap trinh\wizard_survival\enemymanager.cpp
+1744626406 source:f:\lap trinh\wizard_survival\enemymanager.cpp
 	"EnemyManager.h"
 
 1744457039 f:\lap trinh\wizard_survival\enemymanager.h
@@ -160,7 +160,7 @@
 	"Enemy.h"
 	"Player.h"
 
-1744485258 f:\lap trinh\wizard_survival\config.h
+1744626406 f:\lap trinh\wizard_survival\config.h
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
@@ -181,14 +181,14 @@
 1744530320 source:f:\lap trinh\wizard_survival\mapdata.cpp
 	"MapData.h"
 
-1744021881 f:\lap trinh\wizard_survival\mapdata.h
+1744624852 f:\lap trinh\wizard_survival\mapdata.h
 	"config.h"
 
-1744532965 f:\lap trinh\wizard_survival\lion.h
+1744624922 f:\lap trinh\wizard_survival\lion.h
 	"Enemy.h"
 	"Player.h"
 
-1744528587 source:f:\lap trinh\wizard_survival\lion.cpp
+1744626406 source:f:\lap trinh\wizard_survival\lion.cpp
 	"Lion.h"
 	"Collision.h"
 	"MapData.h"
@@ -198,11 +198,11 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744532965 f:\lap trinh\wizard_survival\blaze.h
+1744624922 f:\lap trinh\wizard_survival\blaze.h
 	"Enemy.h"
 	"Player.h"
 
-1744528587 source:f:\lap trinh\wizard_survival\blaze.cpp
+1744626406 source:f:\lap trinh\wizard_survival\blaze.cpp
 	"Blaze.h"
 	"Collision.h"
 	"MapData.h"
@@ -212,11 +212,11 @@
 	"TextureManager.h"
 	"MapData.h"
 
-1744532965 f:\lap trinh\wizard_survival\slimeboss.h
+1744648424 f:\lap trinh\wizard_survival\slimeboss.h
 	"Enemy.h"
 	"Player.h"
 
-1744528587 source:f:\lap trinh\wizard_survival\slimeboss.cpp
+1744648603 source:f:\lap trinh\wizard_survival\slimeboss.cpp
 	"SlimeBoss.h"
 	"Collision.h"
 	"MapData.h"
@@ -228,20 +228,20 @@
 	<vector>
 	"BulletManager.h"
 
-1744516832 f:\lap trinh\wizard_survival\mainmenu.h
+1744624852 f:\lap trinh\wizard_survival\mainmenu.h
 	"config.h"
 
-1744529072 source:f:\lap trinh\wizard_survival\mainmenu.cpp
+1744690455 source:f:\lap trinh\wizard_survival\mainmenu.cpp
 	"MainMenu.h"
 	"TextureManager.h"
 	"Game.h"
 	<iostream>
 
-1744532965 f:\lap trinh\wizard_survival\mermaid.h
+1744648729 f:\lap trinh\wizard_survival\mermaid.h
 	"Enemy.h"
 	"Player.h"
 
-1744532965 source:f:\lap trinh\wizard_survival\mermaid.cpp
+1744648316 source:f:\lap trinh\wizard_survival\mermaid.cpp
 	"Mermaid.h"
 	"Collision.h"
 	"MapData.h"
